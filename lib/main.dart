@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import 'common/color_extension.dart';
+import 'services/banner_services.dart';
 import 'view/bottom_nav_bar.dart';
 
 void main() {
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       statusBarColor: TColor.bg, // Change this to any color you want
       statusBarIconBrightness: Brightness.dark, // Brightness.light for dark icons on light background, vice versa
     ));
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Agricultre Bharat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -30,6 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
+      initialBinding: BindingsBuilder(() {
+        Get.put(BannerController());
+      }),
       home: const BottomNavBar(),
     );
   }

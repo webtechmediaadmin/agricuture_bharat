@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../api_routes/api_routes.dart';
 import '../common/color_extension.dart';
+import '../services/banner_services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,14 +15,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final BannerController bannerController = Get.find();
   PageController _pageController = PageController();
-  int _currentPage = 0;
-  Timer? _timer;
+  final RxInt _currentPage = 0.obs;
+  //Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _currentPage);
+    _pageController = PageController(initialPage: _currentPage.value);
+    bannerController.fetchBanners();
 
     // Start autoplay when widget is initialized
     startAutoPlay();
@@ -28,19 +33,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     // Dispose timer and page controller to prevent memory leaks
-    _timer?.cancel();
+    // _timer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
 
   void startAutoPlay() {
     // Start a timer to change page every 3 seconds
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    Future.delayed(const Duration(seconds: 5), () {
       if (_pageController.hasClients) {
-        if (_currentPage < imageList.length - 1) {
+        if (_currentPage < bannerController.bannerDataList.length - 1) {
           // Reset to the first image if we reach the end
           _pageController.nextPage(
-            duration: const Duration(milliseconds: 400),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
           );
         } else {
@@ -92,23 +97,29 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: SizedBox(
-                    height: 200,
-                    child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        setState(() {
-                          _currentPage = index;
-                        });
-                      },
-                      itemCount: imageList.length,
-                      itemBuilder: (context, index) {
-                        return Image.network(
-                          imageList[index],
-                          fit: BoxFit.contain,
-                        );
-                      },
+                Obx(
+                  ()=> Center(
+                    child: SizedBox(
+                      height: 200,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentPage.value = index;
+                          });
+                        },
+                        itemCount: bannerController.bannerDataList.length,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                           (ApiRoutes.baseUrl +
+                                    bannerController
+                                        .bannerDataList[index].image!) ??
+                                "No Bannner Available",
+                          
+                            fit: BoxFit.contain,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
