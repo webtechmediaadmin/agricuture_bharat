@@ -160,17 +160,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 70,
                               height: 70,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(35),
-                              ),
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(35),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          2, 3), // changes position of shadow
+                                    ),
+                                  ]),
                               child: Center(
-                                child: Text(
-                                  'Item $index',
-                                  style: const TextStyle(color: Colors.white),
+                                child: ClipOval(
+                                  child: Image.network(
+                                    'https://media.istockphoto.com/id/1380361370/photo/decorative-banana-plant-in-concrete-vase-isolated-on-white-background.jpg?s=2048x2048&w=is&k=20&c=Q9VRph8N8d9d7sfb2eB7uf-DQgGGFbZPJu5Zdwm3fzg=',
+                                  ),
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                                 height:
                                     5), // Add spacing between the Container and Text
                             Flexible(
@@ -183,8 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(color: Colors.black),
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines:
-                                      2, // Adjust max lines as per your need
+                                  maxLines: 2, // Adjust max lines as per your need
                                 ),
                               ),
                             ),
@@ -194,7 +202,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -214,22 +224,39 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                Container(
+                SizedBox(
                   height: 300,
                   child: ListView.builder(
-                    itemCount: 10,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index){
-                      return Column(
-                        children: [
-                          Container(
-                            child:  Image.asset(""),
-                          ),
-                          
-                        ],
-                      );
-                    }
-                  ),
+                      itemCount: 10,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                height: 100,
+                                width: 90,
+                                decoration: BoxDecoration(
+                                    color: TColor.bg,
+                                    borderRadius: BorderRadius.circular(2),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: const Offset(
+                                            2, 3), // changes position of shadow
+                                      ),
+                                    ]),
+                                child: Image.network(
+                                  'https://media.istockphoto.com/id/1380361370/photo/decorative-banana-plant-in-concrete-vase-isolated-on-white-background.jpg?s=2048x2048&w=is&k=20&c=Q9VRph8N8d9d7sfb2eB7uf-DQgGGFbZPJu5Zdwm3fzg=',
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
                 )
               ],
             ),
