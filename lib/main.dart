@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: TColor.bg,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        appBarTheme: const AppBarTheme(
+        appBarTheme:  AppBarTheme(
           elevation: 0,
-          backgroundColor: Colors.transparent
+          backgroundColor: TColor.bg
         ),
-        useMaterial3: true,
+        useMaterial3: false,
       ),
       initialBinding: BindingsBuilder(() {
         Get.put(BannerController());
