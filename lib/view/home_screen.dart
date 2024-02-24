@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:agriculter_bharat/services/categories_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final BannerController bannerController = Get.find();
+  final CategoryController categoryController = Get.find();
   PageController _pageController = PageController();
   final RxInt _currentPage = 0.obs;
   //Timer? _timer;
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _pageController = PageController(initialPage: _currentPage.value);
     bannerController.fetchBanners();
-
+    categoryController.fetchCategory();
     // Start autoplay when widget is initialized
     startAutoPlay();
   }
@@ -98,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(
-                  ()=> Center(
+                  () => Center(
                     child: SizedBox(
                       height: 200,
                       child: PageView.builder(
@@ -111,11 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: bannerController.bannerDataList.length,
                         itemBuilder: (context, index) {
                           return Image.network(
-                           (ApiRoutes.baseUrl +
+                            (ApiRoutes.baseUrl +
                                     bannerController
                                         .bannerDataList[index].image!) ??
                                 "No Bannner Available",
-                          
                             fit: BoxFit.contain,
                           );
                         },
@@ -147,45 +148,56 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 4.0,
-                      mainAxisSpacing: 8.0,
-                    ),
-                    itemCount: 12,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        width: 70,
-                        height: 100,
-                        // Adjust the height as per your need
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                  child: Obx(
+                    () => GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 4.0,
+                        mainAxisSpacing: 10.0,
+                      ),
+                      itemCount: categoryController.categoryDataList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          //mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment
                               .center, // Center content vertically
                           children: [
-                            Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(35),
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(50),
                                   boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: const Offset(
-                                          2, 3), // changes position of shadow
+                                     BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 3,
+                        blurRadius: 7,
+                        offset:
+                            const Offset(0, 3), // changes position of shadow
+                      ),
+                                  ]
+                                ),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors
+                                      .transparent, // Ensure the background is transparent
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      (ApiRoutes.baseUrl +
+                                              categoryController
+                                                  .categoryDataList[index]
+                                                  .image!) ??
+                                          "",
+                                           height: 70,
+                                width: 70,
+                                      fit: BoxFit
+                                          .fill, // Use BoxFit.cover to fit the image within the circle
                                     ),
-                                  ]),
-                              child: Center(
-                                child: ClipOval(
-                                  child: Image.network(
-                                    'https://media.istockphoto.com/id/1380361370/photo/decorative-banana-plant-in-concrete-vase-isolated-on-white-background.jpg?s=2048x2048&w=is&k=20&c=Q9VRph8N8d9d7sfb2eB7uf-DQgGGFbZPJu5Zdwm3fzg=',
                                   ),
                                 ),
                               ),
@@ -193,24 +205,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(
                                 height:
                                     5), // Add spacing between the Container and Text
-                            Flexible(
+                            Expanded(
+                              flex: 2,
                               // Use Flexible to allow text to wrap
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0),
                                 child: Text(
-                                  'Item $index',
+                                  categoryController
+                                          .categoryDataList[index].title! ??
+                                      "",
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.w800),
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 2, // Adjust max lines as per your need
+                                  
+                                  maxLines:
+                                      2, // Adjust max lines as per your need
                                 ),
                               ),
                             ),
                           ],
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(

@@ -1,3 +1,4 @@
+import 'package:agriculter_bharat/services/categories_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       initialBinding: BindingsBuilder(() {
         Get.put(BannerController());
+        Get.put(CategoryController());
       }),
       home: const BottomNavBar(),
     );
