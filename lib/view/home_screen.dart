@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import '../api_routes/api_routes.dart';
 import '../common/color_extension.dart';
 import '../services/banner_services.dart';
-import '../widget/custom_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -91,11 +90,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       itemCount: bannerController.bannerDataList.length,
                       itemBuilder: (context, index) {
-                        return Image.network(
-                          (ApiRoutes.baseUrl +
+                        return  
+                        Image.network(
+                          bannerController.bannerDataList[index].image != null ? (ApiRoutes.baseUrl +
                                   bannerController
-                                      .bannerDataList[index].image!) ??
-                              "No Bannner Available",
+                                      .bannerDataList[index].image!) : "No Banner Available",
+                             
                           fit: BoxFit.contain,
                         );
                       },
@@ -167,11 +167,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     .transparent, // Ensure the background is transparent
                                 child: ClipOval(
                                   child: Image.network(
+                                    categoryController.categoryDataList[index].image != null ?
                                     (ApiRoutes.baseUrl +
                                             categoryController
                                                 .categoryDataList[index]
-                                                .image!) ??
-                                        "",
+                                                .image!) :
+                                        "No Image found",
                                          height: 70,
                               width: 70,
                                     fit: BoxFit
@@ -192,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   horizontal: 4.0),
                               child: Text(
                                 categoryController
-                                        .categoryDataList[index].title! ??
+                                        .categoryDataList[index].title ??
                                     "",
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.w800),
