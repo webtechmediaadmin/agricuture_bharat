@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agriculter_bharat/services/categories_services.dart';
+import 'package:agriculter_bharat/view/sub_category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -90,12 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       itemCount: bannerController.bannerDataList.length,
                       itemBuilder: (context, index) {
-                        return  
-                        Image.network(
-                          bannerController.bannerDataList[index].image != null ? (ApiRoutes.baseUrl +
-                                  bannerController
-                                      .bannerDataList[index].image!) : "No Banner Available",
-                             
+                        return Image.network(
+                          bannerController.bannerDataList[index].image != null
+                              ? (ApiRoutes.baseUrl +
+                                  bannerController.bannerDataList[index].image!)
+                              : "No Banner Available",
                           fit: BoxFit.contain,
                         );
                       },
@@ -122,8 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 3,
                       blurRadius: 7,
-                      offset:
-                          const Offset(0, 3), // changes position of shadow
+                      offset: const Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
@@ -139,72 +138,83 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     itemCount: categoryController.categoryDataList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        //mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment
-                            .center, // Center content vertically
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: Colors.black),
-                                borderRadius: BorderRadius.circular(50),
-                                boxShadow: [
-                                   BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 7,
-                      offset:
-                          const Offset(0, 3), // changes position of shadow
-                    ),
-                                ]
-                              ),
-                              child: CircleAvatar(
-                                backgroundColor: Colors
-                                    .transparent, // Ensure the background is transparent
-                                child: ClipOval(
-                                  child: Image.network(
-                                    categoryController.categoryDataList[index].image != null ?
-                                    (ApiRoutes.baseUrl +
-                                            categoryController
-                                                .categoryDataList[index]
-                                                .image!) :
-                                        "No Image found",
-                                         height: 70,
-                              width: 70,
-                                    fit: BoxFit
-                                        .fill, // Use BoxFit.cover to fit the image within the circle
+                      return GestureDetector(
+                        onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => SubCategoryView(
+                      id:  categoryController.categoryDataList[index].id!,
+                      textTitle: categoryController.categoryDataList[index].title!,
+                      )));
+                  },
+                        child: Column(
+                          //mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment
+                              .center, // Center content vertically
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(50),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 3,
+                                        blurRadius: 7,
+                                        offset: const Offset(
+                                            1, 3), // changes position of shadow
+                                      ),
+                                    ]),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors
+                                      .transparent, // Ensure the background is transparent
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      categoryController.categoryDataList[index]
+                                                  .image !=
+                                              null
+                                          ? (ApiRoutes.baseUrl +
+                                              categoryController
+                                                  .categoryDataList[index].image!)
+                                          : "No Image found",
+                                      height: 70,
+                                      width: 70,
+                                      fit: BoxFit
+                                          .fill, // Use BoxFit.cover to fit the image within the circle
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                              height:
-                                  5), // Add spacing between the Container and Text
-                          Expanded(
-                            flex: 2,
-                            // Use Flexible to allow text to wrap
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0),
-                              child: Text(
-                                categoryController
-                                        .categoryDataList[index].title ??
-                                    "",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.w800),
-                                overflow: TextOverflow.ellipsis,
-                                
-                                maxLines:
-                                    2, // Adjust max lines as per your need
+                            const SizedBox(
+                                height:
+                                    5), // Add spacing between the Container and Text
+                            Expanded(
+                              flex: 2,
+                              // Use Flexible to allow text to wrap
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: Text(
+                                  categoryController
+                                          .categoryDataList[index].title ??
+                                      "",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800),
+                                  overflow: TextOverflow.ellipsis,
+                                        
+                                  maxLines:
+                                      2, // Adjust max lines as per your need
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     },
                   ),

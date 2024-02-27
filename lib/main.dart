@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'common/color_extension.dart';
+import 'services/all_products_services.dart';
 import 'services/banner_services.dart';
+import 'services/sub_categories_services.dart';
 import 'view/bottom_nav_bar.dart';
 
 void main() {
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
       initialBinding: BindingsBuilder(() {
         Get.put(BannerController());
         Get.put(CategoryController());
+        Get.put(SubCategoryController());
+        Get.put(AllProductsController());
       }),
       home: const BottomNavBar(),
     );
