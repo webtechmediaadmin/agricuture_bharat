@@ -1,3 +1,4 @@
+import 'package:agriculter_bharat/view/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +8,8 @@ import '../services/all_products_services.dart';
 class AllProductsView extends StatefulWidget {
   final String id;
   final String text;
-  const AllProductsView({Key? key, required this.id, required this.text}) : super(key: key);
+  const AllProductsView({Key? key, required this.id, required this.text})
+      : super(key: key);
 
   @override
   State<AllProductsView> createState() => _AllProductsViewState();
@@ -53,67 +55,77 @@ class _AllProductsViewState extends State<AllProductsView> {
             shrinkWrap: true, // Disable GridView's scrolling
             crossAxisCount: 2,
             mainAxisSpacing: 20.0,
-            children: List.generate( allProductsController.allProductDataList
-                                        .length, (index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 200,
-                      color: Colors.white,
-                      child: Card(
-                        elevation: 5,
-                        shadowColor: Colors.grey.withOpacity(1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Image.network(
-                              allProductsController.allProductDataList
-                                        [index].image !=
-                                      null
-                                  ? (ApiRoutes.baseUrl +
-                                       allProductsController.allProductDataList
-                                        [index].logo.toString())
-                                  : "No Images Found",
-                              fit: BoxFit.cover,
+            children: List.generate(
+                allProductsController.allProductDataList.length, (index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ProductDetailScreen(
+                            id: allProductsController.allProductDataList[index].id!,
+                            text: allProductsController.allProductDataList[index].title!,
+                          )));
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 200,
+                        color: Colors.white,
+                        child: Card(
+                          elevation: 5,
+                          shadowColor: Colors.grey.withOpacity(1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Image.network(
+                                allProductsController
+                                            .allProductDataList[index].logo !=
+                                        null
+                                    ? (ApiRoutes.baseUrl +
+                                        allProductsController
+                                            .allProductDataList[index].logo
+                                            .toString())
+                                    : "No Images Found",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    allProductsController.allProductDataList
-                                        [index].title.toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                    const SizedBox(height: 5),
+                    Text(
+                      allProductsController.allProductDataList[index].title
+                          .toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Price: ${allProductsController.allProductDataList
-                                        [index].price.toString()}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[700],
+                    const SizedBox(height: 4),
+                    Text(
+                      'Price: ${allProductsController.allProductDataList[index].price.toString()}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Quantity:  ${allProductsController.allProductDataList
-                                        [index].quantity.toString()}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.green,
+                    SizedBox(height: 4),
+                    Text(
+                      'Quantity:  ${allProductsController.allProductDataList[index].quantity.toString()}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.green,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }),
           ),
