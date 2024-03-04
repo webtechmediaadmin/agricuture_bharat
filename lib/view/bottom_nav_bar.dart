@@ -2,6 +2,8 @@ import 'package:agriculter_bharat/widget/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
 import '../common/color_extension.dart';
+import '../constant/app_preferences.dart';
+import '../constant/constant.dart';
 import 'home_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -27,6 +29,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getValues();
+  }
+
+  getValues() async {
+    var token = await PreferenceApp().getAccessToken();
+    MyConstant.access_token = token ?? "";
+    print(
+        "first time user access ${MyConstant.access_token = token ?? "empty token"}");
   }
 
   @override

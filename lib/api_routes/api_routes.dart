@@ -2,8 +2,8 @@ class ApiRoutes {
   static String preProductionUrl = "http://13.201.65.104/";
   static String baseUrl = preProductionUrl;
 
-  static String mobileNumberApi = "${baseUrl}users/phone-login";
-  static String verifyOtp = "${baseUrl}users/verify-otp";
+  static String mobileNumberApi = "${baseUrl}api/users/phone-login";
+  static String verifyOtp = "${baseUrl}api/users/otp-verify";
   static String bannerApi = "${baseUrl}api/banners";
   static String subCategories = "${baseUrl}api/sub-categories?categoryID=";
   static String allProducts = "${baseUrl}api/products?subCategoryID=";

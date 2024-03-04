@@ -1,4 +1,6 @@
+import 'package:agriculter_bharat/services/auth_services.dart';
 import 'package:agriculter_bharat/services/categories_services.dart';
+import 'package:agriculter_bharat/view/login/otp_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -40,8 +42,10 @@ class MyApp extends StatelessWidget {
         Get.put(CategoryController());
         Get.put(SubCategoryController());
         Get.put(AllProductsController());
+        Get.put(AuthController());
       }),
       home: const BottomNavBar(),
+     
     );
   }
 }

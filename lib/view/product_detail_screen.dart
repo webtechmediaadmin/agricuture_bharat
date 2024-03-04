@@ -1,10 +1,16 @@
+import 'package:agriculter_bharat/constant/constant.dart';
+import 'package:agriculter_bharat/view/login/otp_view.dart';
+import 'package:agriculter_bharat/view/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:html/parser.dart' as htmlParser;
 import 'package:html/dom.dart' as htmlDom;
 import '../api_routes/api_routes.dart';
+import '../constant/app_preferences.dart';
+import '../constant/helper.dart';
 import '../services/all_products_services.dart';
+import '../services/auth_services.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String id;
@@ -17,44 +23,58 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final AllProductsController allProductsDetailsController = Get.find();
+  final AuthController authController = Get.find();
   PageController _pageController = PageController();
   final RxInt _currentPage = 0.obs;
- 
+  final TextEditingController _phoneNumberController = TextEditingController();
+  FocusNode _phoneNumberFocusNode = FocusNode();
+  String otp = "";
+
+  @override
+  void dispose() {
+    // _phoneNumberController.dispose();
+    _phoneNumberFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     // TODO: implement initState
-    allProductsDetailsController.fetchAllProductsDetails(widget.id).then((_) =>priceSaving() );
+    allProductsDetailsController
+        .fetchAllProductsDetails(widget.id)
+        .then((_) => priceSaving());
     _pageController = PageController(initialPage: _currentPage.value);
     print("ID ${widget.id}");
-    
+    _phoneNumberController.text;
     super.initState();
   }
 
- void priceSaving() {
-  double actualPrice = double.tryParse(allProductsDetailsController
-      .allProductDetailModel.value.data?.first.price ?? '0.0') ?? 0.0;
-  int discountedPrice = allProductsDetailsController
-      .allProductDetailModel.value.data?.first.discountPercent ?? 0;
+  void priceSaving() {
+    double actualPrice = double.tryParse(allProductsDetailsController
+                .allProductDetailModel.value.data?.first.price ??
+            '0.0') ??
+        0.0;
+    int discountedPrice = allProductsDetailsController
+            .allProductDetailModel.value.data?.first.discountPercent ??
+        0;
 
-  if (actualPrice != null && discountedPrice != null) {
-     allProductsDetailsController.savePrice.value = actualPrice * discountedPrice / 100;
-     
-    print("save Price ${allProductsDetailsController.savePrice}");
-  } 
-}
+    if (actualPrice != null && discountedPrice != null) {
+      allProductsDetailsController.savePrice.value =
+          actualPrice * discountedPrice / 100;
 
-
+      print("save Price ${allProductsDetailsController.savePrice}");
+    }
+  }
 
   void tableFormat() {
     final htmlDom.Document document = htmlParser.parse(
         allProductsDetailsController.allProductDetailModel.value.data!
             .map((element) => element.description.toString())
             .join(" "));
-    
+
     // Retrieve and display product description
-    final htmlDom.Element? productDescriptionElement =
-        document.querySelector('h2'); // Selecting the h2 tag for product description
+    final htmlDom.Element? productDescriptionElement = document
+        .querySelector('h2'); // Selecting the h2 tag for product description
     if (productDescriptionElement != null) {
       allProductsDetailsController.productDescription.value =
           productDescriptionElement.text.trim();
@@ -66,7 +86,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       final List<List<String>> tableData = [];
       table.querySelectorAll('tr').forEach((htmlDom.Element row) {
         final List<String> rowData = [];
-        row.querySelectorAll('td').forEach((htmlDom.Element cell){
+        row.querySelectorAll('td').forEach((htmlDom.Element cell) {
           rowData.add(cell.text);
         });
 
@@ -75,7 +95,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
       allProductsDetailsController.tableData.value = tableData;
     }
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +237,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: '${allProductsDetailsController.savePrice.value.toStringAsFixed(2)} /-   ',
+                        text:
+                            '${allProductsDetailsController.savePrice.value.toStringAsFixed(2)} /-   ',
                         style: TextStyle(
                             fontSize: 18.0, // Change font size for "180"
                             color: Colors.red, // Change color for "180"
@@ -304,7 +325,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 130, // Set your desired width
                     height: 40,
                     // Set your desired height
@@ -392,7 +413,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               RichText(
                 text: TextSpan(
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
                   ),
@@ -405,7 +426,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             .withOpacity(0.7), // Change color for "Price"
                       ),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: 'Agriculture Bharat',
                       style: TextStyle(
                           fontSize: 16.0, // Change font size for "180"
@@ -419,8 +440,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {
-                  print('Item bought!');
+                onPressed: () async {
+                 
+                  bool? myBoolValue = await PreferenceApp().getIsNewUser();
+                  print("is new user ${myBoolValue}");
+                  String? userToken = await PreferenceApp().getAccessToken();
+                  print("token given ${userToken}");
+
+                  if (myBoolValue == true && userToken != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PaymentScreen()),
+                    );
+                  } else {
+                    showButtomSheet();
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50), // Full width
@@ -464,8 +499,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            for (String cell
-                                in allProductsDetailsController.tableData[index])
+                            for (String cell in allProductsDetailsController
+                                .tableData[index])
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -473,8 +508,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: Text(
                                     cell,
                                     style: const TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black),
+                                        fontSize: 15, color: Colors.black),
                                   ),
                                 ),
                               ),
@@ -493,14 +527,194 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     allProductsDetailsController.productDescription.value,
-                    style: const TextStyle(
-                        fontSize: 15, color: Colors.black),
+                    style: const TextStyle(fontSize: 15, color: Colors.black),
                   ),
                 )
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void showButtomSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(const Duration(milliseconds: 200), () {
+          FocusScope.of(context).requestFocus(_phoneNumberFocusNode);
+        });
+
+        return GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: SizedBox(
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Close the bottom sheet
+                        },
+                        icon: const Icon(
+                          Icons.cancel,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            "Log in or sign up",
+                            style: TextStyle(
+                                letterSpacing: 1,
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            width: MediaQuery.of(context)
+                                .size
+                                .width, // Set your desired width
+                            child: TextFormField(
+                              keyboardType: TextInputType.phone,
+                              focusNode: _phoneNumberFocusNode,
+                              controller: _phoneNumberController,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(10),
+                                hintText: "Enter mobile number",
+                                prefixText: "+91",
+                                prefixStyle: const TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Adjust border radius as needed
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors
+                                        .grey, // Border color when focused
+                                    width: 0.5, // Border width when focused
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      5.0), // Adjust border radius as needed
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors
+                                        .grey, // Border color when focused
+                                    width: 0.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      5.0), // Adjust border radius as needed
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors
+                                        .grey, // Border color when focused
+                                    width: 0.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      5.0), // Adjust border radius as needed
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16.0),
+                          Obx(
+                            () => authController.isLoading.value
+                                ? const CircularProgressIndicator()
+                                : ElevatedButton(
+                                    onPressed: () async {
+                                      // Handle submission here
+                                      String phoneNumber =
+                                          _phoneNumberController.text;
+                                      print(
+                                          'Submitted Phone Number: $phoneNumber');
+                                      _phoneNumberFocusNode.unfocus();
+                                      Navigator.pop(context);
+                                      final mobileValidation =
+                                          isValidPhoneNumber(phoneNumber);
+                                      if (phoneNumber == "") {
+                                        showSnackBar(
+                                            "", "Please enter mobile number");
+                                      } else if (phoneNumber.length < 10) {
+                                        showSnackBar("",
+                                            "Mobile number must have 10 digits");
+                                      } else if (mobileValidation == false) {
+                                        showSnackBar(
+                                            "", "Invalid mobile number");
+                                      } else {
+                                        print("Tapped button");
+                                        try {
+                                          await authController
+                                              .loginUser(phoneNumber)
+                                              .then((value) async {
+                                            MyConstant.mobileNumber =
+                                                phoneNumber;
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => OTPView(
+                                                      callback:
+                                                          showButtomSheet)),
+                                            );
+                                          });
+                                        } catch (e) {
+                                          print('Error: $e');
+                                          showSnackBar(
+                                              "", "Error sending OTP: $e");
+                                        }
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: const Size(
+                                          double.infinity, 50), // Full width
+                                      primary: Color.fromARGB(255, 58, 57,
+                                          49), // Color for Buy button
+                                    ),
+                                    child: const Text(
+                                      'Continue',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
