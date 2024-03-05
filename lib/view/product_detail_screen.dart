@@ -652,7 +652,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 : ElevatedButton(
                                     onPressed: () async {
                                       // Handle submission here
-                                      String phoneNumber =
+                                      String? phoneNumber =
                                           _phoneNumberController.text;
                                       print(
                                           'Submitted Phone Number: $phoneNumber');
@@ -694,8 +694,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                       minimumSize: const Size(
-                                          double.infinity, 50), // Full width
-                                      primary: Color.fromARGB(255, 58, 57,
+                                          double.infinity, 50), backgroundColor: const Color.fromARGB(255, 58, 57,
                                           49), // Color for Buy button
                                     ),
                                     child: const Text(

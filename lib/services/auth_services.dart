@@ -70,7 +70,6 @@ class AuthController extends GetxController {
           MyConstant.access_token = data['token'] ?? "";
           PreferenceApp().setIsNewUser(true);
           print("--------token ${MyConstant.access_token}");
-          // Get.offAllNamed(RouteNames.home);
           }
         }
         return true;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../common/color_extension.dart';
 import '../constant/app_preferences.dart';
 import '../constant/constant.dart';
+import 'add_to_cart.dart';
 import 'home_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -20,7 +21,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text('Products Page'),
+    AddToCart(),
     Text('Search Page'),
     Text('Profile Page'),
   ];
