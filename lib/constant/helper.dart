@@ -9,8 +9,6 @@ void showSnackBar(String title, String message) {
   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
   snackStyle: SnackStyle.GROUNDED,
   margin: const EdgeInsets.all(0.0),
-
-
   );
 
 }

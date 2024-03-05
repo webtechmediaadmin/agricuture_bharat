@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'common/color_extension.dart';
 import 'services/all_products_services.dart';
 import 'services/banner_services.dart';
+import 'services/cart_services.dart';
 import 'services/sub_categories_services.dart';
 import 'view/bottom_nav_bar.dart';
 
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         Get.put(SubCategoryController());
         Get.put(AllProductsController());
         Get.put(AuthController());
+        Get.put(CartController());
       }),
       home: const BottomNavBar(),
      

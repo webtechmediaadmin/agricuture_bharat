@@ -1,9 +1,11 @@
 import 'package:agriculter_bharat/widget/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../common/color_extension.dart';
 import '../constant/app_preferences.dart';
 import '../constant/constant.dart';
+import '../services/cart_services.dart';
 import 'add_to_cart.dart';
 import 'home_screen.dart';
 
@@ -17,7 +19,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final CartController addToCartController = Get.find();
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
@@ -51,47 +53,82 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-         appBar: AppBar(
+        appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.menu_rounded, color: Colors.black,),
+            icon: const Icon(
+              Icons.menu_rounded,
+              color: Colors.black,
+            ),
             onPressed: () {
               print("drawer...");
-               _scaffoldKey.currentState?.openDrawer();
-              
-            }
-,
+              _scaffoldKey.currentState?.openDrawer();
+            },
           ),
-          
           backgroundColor: TColor.bg,
-            centerTitle: true,
-            title: Text(
-              "Agriculture Bharat",
-              style: TextStyle(
-                  color: TColor.primaryText,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w800),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.shopping_bag_outlined,
-                  size: 25,
-                  color: TColor.primaryText,
-                ),
-              )
-            ],
+          centerTitle: true,
+          title: Text(
+            "Agriculture Bharat",
+            style: TextStyle(
+                color: TColor.primaryText,
+                fontSize: 25,
+                fontWeight: FontWeight.w800),
           ),
-        drawer: const CustomDrawer(), 
+          actions: _selectedIndex == 0 || _selectedIndex == 1
+              ? [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      children: [
+                        Icon(
+                          Icons.shopping_bag_outlined,
+                          size: 30,
+                          color: TColor.primaryText,
+                        ),
+                        // Show count only if items are in the cart
+                        if (addToCartController.fetchCartModel != null &&
+                            addToCartController.fetchCartModel?.count != null &&
+                            addToCartController.fetchCartModel!.count! > 0)
+                          
+                          Positioned(
+                            right: 7,
+                            top: 9,
+                            child:   Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Text(
+                                '${addToCartController.fetchCartModel?.count ?? 0}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ]
+              : [],
+        ),
+        drawer: const CustomDrawer(),
         body: _widgetOptions[_selectedIndex],
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(20),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Theme(
-               data: Theme.of(context).copyWith(
-            canvasColor: Colors.green.withOpacity(0.5), // Set the background color here
-          ),
+              data: Theme.of(context).copyWith(
+                canvasColor: Colors.green
+                    .withOpacity(0.5), // Set the background color here
+              ),
               child: BottomNavigationBar(
                 backgroundColor: const Color(0xff0D4F80),
                 items: const <BottomNavigationBarItem>[
@@ -101,7 +138,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.shopping_cart),
-                    label: 'Products',
+                    label: 'Cart',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.search),

@@ -18,4 +18,8 @@ class ApiRoutes {
   static String subCategoriesRelated= "${baseUrl}sub-categories/related/";
   static String enquiry= "${baseUrl}enquiry/";
   static String notificationApi = "${baseUrl}notifications/admin/get";
+  static String addToCartApi = "${baseUrl}api/cart/";
+  static String addToCartFetchApi = "${baseUrl}api/cart/your-cart";
+  static String deleteAddToCartApi = "${baseUrl}api/cart/";
+  static String editAddToCartApi = "${baseUrl}api/cart/";
 }

@@ -11,6 +11,7 @@ import '../constant/app_preferences.dart';
 import '../constant/helper.dart';
 import '../services/all_products_services.dart';
 import '../services/auth_services.dart';
+import '../services/cart_services.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String id;
@@ -24,6 +25,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final AllProductsController allProductsDetailsController = Get.find();
   final AuthController authController = Get.find();
+  final CartController addToCartController = Get.find();
   PageController _pageController = PageController();
   final RxInt _currentPage = 0.obs;
   final TextEditingController _phoneNumberController = TextEditingController();
@@ -471,6 +473,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ElevatedButton(
                 onPressed: () {
                   print('Item bought!');
+                  print("ID of product ${widget.id}");
+                  addToCartController.addToCartData(widget.id);
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
