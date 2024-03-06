@@ -18,7 +18,33 @@ class _AddToCartState extends State<AddToCart> {
   @override
   void initState() {
     addToCartController.fetchCartData();
+    calculateTotalAmount();
     super.initState();
+  }
+
+  int _quantity = 1;
+
+  // void _incrementQuantity() {
+  //   setState(() {
+  //     _quantity++;
+  //   });
+
+  // }
+
+  // void _decrementQuantity() {
+  //   if (_quantity > 1) {
+  //     setState(() {
+  //       _quantity--;
+  //     });
+  //   }
+  // }
+
+  double calculateTotalAmount() {
+    double totalAmount = 0.0;
+    for (var cartItem in addToCartController.fetchCartDataList) {
+      totalAmount += (cartItem.totalAmount ?? 0.0) * (cartItem.quantity ?? 1);
+    }
+    return totalAmount;
   }
 
   @override
@@ -28,16 +54,14 @@ class _AddToCartState extends State<AddToCart> {
         () {
           if (addToCartController.fetchCartDataList == null ||
               addToCartController.fetchCartDataList.isEmpty) {
-            return Center(child: Text('Cart is empty'));
+            return const Center(child: Text('Cart is empty'));
           } else {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ListView.builder(
                 itemCount: addToCartController.fetchCartDataList.length,
                 itemBuilder: (context, index) {
-                  final cartItem =
-                      addToCartController.fetchCartDataList[index];
-
+                  final cartItem = addToCartController.fetchCartDataList[index];
                   return Column(
                     children: [
                       Padding(
@@ -57,9 +81,11 @@ class _AddToCartState extends State<AddToCart> {
                           ),
                           onDismissed: (direction) {
                             setState(() {
-                              addToCartController.fetchCartDataList.removeAt(index);
+                              addToCartController.fetchCartDataList
+                                  .removeAt(index);
                             });
-                            addToCartController.deleteAddToCartData(cartItem.id.toString());
+                            addToCartController
+                                .deleteAddToCartData(cartItem.id.toString());
                           },
                           child: Row(
                             children: [
@@ -75,37 +101,100 @@ class _AddToCartState extends State<AddToCart> {
                                     ),
                                     child: Image.network(
                                       cartItem.productId!.logo != null
-                                          ? (ApiRoutes.baseUrl + cartItem.productId!.logo!)
+                                          ? (ApiRoutes.baseUrl +
+                                              cartItem.productId!.logo!)
                                           : "No Banner Available",
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 20),
+                              const SizedBox(width: 20),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "${cartItem.productId!.title}",
                                     style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                    ),
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600),
                                     maxLines: 2,
                                   ),
                                   const SizedBox(height: 10),
-                                  Text.rich(
-                                    TextSpan(
-                                      text: "\u20B9 ${cartItem.totalAmount}",
-                                      style: TextStyle(color: Colors.red),
-                                      children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text.rich(
                                         TextSpan(
-                                          text: " x${cartItem.quantity}",
-                                          style: TextStyle(color: Colors.grey),
+                                          text:
+                                              "\u20B9 ${cartItem.totalAmount}",
+                                          style: const TextStyle(
+                                              color: Colors.red, fontSize: 16),
+                                          children: [
+                                            TextSpan(
+                                              text: " x${cartItem.quantity}",
+                                              style: const TextStyle(
+                                                  color: Colors.grey),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
+                                      ),
+                                      const SizedBox(width: 25),
+                                      Container(
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            IconButton(
+                                              icon: const Icon(Icons.remove,
+                                                  size: 15,
+                                                  color: Colors.white),
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (cartItem.quantity! > 1) {
+                                                    cartItem.quantity =
+                                                        cartItem.quantity! - 1;
+                                                  }
+                                                });
+                                                addToCartController
+                                                    .editAddToCartData(
+                                                        cartItem.id!,
+                                                        cartItem.quantity!);
+                                              },
+                                            ),
+                                            Text(
+                                              '${cartItem.quantity!}',
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.add,
+                                                size: 15,
+                                                color: Colors.white,
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  cartItem.quantity =
+                                                      cartItem.quantity! + 1;
+                                                });
+                                                addToCartController
+                                                    .editAddToCartData(
+                                                        cartItem.id!,
+                                                        _quantity);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
                             ],
@@ -130,7 +219,7 @@ class _AddToCartState extends State<AddToCart> {
           ),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, -15),
+              offset: const Offset(0, -15),
               blurRadius: 20,
               color: TColor.bg.withOpacity(0.15),
             ),
@@ -166,16 +255,19 @@ class _AddToCartState extends State<AddToCart> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text.rich(
-                    TextSpan(text: "Total:\n", children: [
-                      TextSpan(
-                        text: "\$337.15",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                  Obx(
+                    () => Text.rich(
+                      TextSpan(text: "Total:\n", children: [
+                        TextSpan(
+                          text:
+                              "\u20B9 ${calculateTotalAmount().toStringAsFixed(2)}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ]),
+                      ]),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {},

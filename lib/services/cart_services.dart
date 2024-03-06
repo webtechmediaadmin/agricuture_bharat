@@ -42,6 +42,8 @@ class CartController extends GetxController {
  RxList<FetchCartData> fetchCartDataList = <FetchCartData>[].obs;
  FetchCartModel? fetchCartModel;
 
+ 
+
   Future<void> fetchCartData() async {
     try {
       var uri = await Uri.parse(ApiRoutes.addToCartFetchApi);

@@ -1,6 +1,5 @@
 import 'package:agriculter_bharat/services/auth_services.dart';
 import 'package:agriculter_bharat/services/categories_services.dart';
-import 'package:agriculter_bharat/view/login/otp_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

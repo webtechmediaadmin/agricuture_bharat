@@ -49,7 +49,7 @@ class FetchCartData {
         this.id,
         this.userId,
         this.productId,
-        this.quantity,
+        this.quantity = 1,
         this.totalAmount,
         this.createdAt,
         this.updatedAt,

@@ -249,7 +249,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       TextSpan(
                         text:
                             '(${allProductsDetailsController.allProductDetailModel.value.data?.first.discountPercent}% OFF)',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18.0, // Change font size for "180"
                             color: Colors.green, // Change color for "180"
                             fontWeight: FontWeight.w600),
