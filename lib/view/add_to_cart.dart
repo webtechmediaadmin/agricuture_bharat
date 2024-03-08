@@ -1,3 +1,4 @@
+import 'package:agriculter_bharat/view/order_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +19,6 @@ class _AddToCartState extends State<AddToCart> {
   @override
   void initState() {
     addToCartController.fetchCartData();
-    calculateTotalAmount();
     super.initState();
   }
 
@@ -43,6 +43,7 @@ class _AddToCartState extends State<AddToCart> {
     double totalAmount = 0.0;
     for (var cartItem in addToCartController.fetchCartDataList) {
       totalAmount += (cartItem.totalAmount ?? 0.0) * (cartItem.quantity ?? 1);
+      print("data type amount ${totalAmount.runtimeType}");
     }
     return totalAmount;
   }
@@ -156,19 +157,25 @@ class _AddToCartState extends State<AddToCart> {
                                                   color: Colors.white),
                                               onPressed: () {
                                                 setState(() {
-                                                  if (cartItem.quantity! > 1) {
+                                                  if (cartItem.quantity > 1) {
                                                     cartItem.quantity =
-                                                        cartItem.quantity! - 1;
+                                                        cartItem.quantity - 1;
                                                   }
                                                 });
+                                                print(
+                                                    "Decreased ${cartItem.quantity.toString()}");
+                                                print(
+                                                    "CART ID ${cartItem.id!}");
+                                                print(
+                                                    "data type quantityyy ${cartItem.quantity.runtimeType}");
                                                 addToCartController
                                                     .editAddToCartData(
                                                         cartItem.id!,
-                                                        cartItem.quantity!);
+                                                        cartItem.quantity);
                                               },
                                             ),
                                             Text(
-                                              '${cartItem.quantity!}',
+                                              cartItem.quantity.toString(),
                                               style: const TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.white),
@@ -182,12 +189,19 @@ class _AddToCartState extends State<AddToCart> {
                                               onPressed: () {
                                                 setState(() {
                                                   cartItem.quantity =
-                                                      cartItem.quantity! + 1;
+                                                      cartItem.quantity + 1;
                                                 });
+                                                print(
+                                                    "Increased ${cartItem.quantity}");
+                                                print(
+                                                    "CART ID ${cartItem.id!}");
+
                                                 addToCartController
                                                     .editAddToCartData(
                                                         cartItem.id!,
-                                                        _quantity);
+                                                        cartItem.quantity)
+                                                    .then((value) => print(
+                                                        "increased value"));
                                               },
                                             ),
                                           ],
@@ -270,7 +284,15 @@ class _AddToCartState extends State<AddToCart> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      if (calculateTotalAmount() > 0) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const OrderSummary()),
+                        );
+                      }
+                    },
                     child: SizedBox(
                       width: 190,
                       child: Container(

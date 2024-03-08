@@ -15,9 +15,8 @@ class CartController extends GetxController {
         "Accept": "application/json",
         "Authorization": 'Bearer ${MyConstant.access_token}'
       };
-     // Map<String, dynamic> body = {"quantity": 1};
-      var response =
-          await http.post(Uri.parse(apiUrl), headers: headers);
+      // Map<String, dynamic> body = {"quantity": "1"};
+      var response = await http.post(Uri.parse(apiUrl), headers: headers);
       print(response.statusCode);
       print(response.body);
       print(apiUrl);
@@ -38,11 +37,8 @@ class CartController extends GetxController {
     }
   }
 
-
- RxList<FetchCartData> fetchCartDataList = <FetchCartData>[].obs;
- FetchCartModel? fetchCartModel;
-
- 
+  RxList<FetchCartData> fetchCartDataList = <FetchCartData>[].obs;
+  FetchCartModel? fetchCartModel;
 
   Future<void> fetchCartData() async {
     try {
@@ -50,7 +46,7 @@ class CartController extends GetxController {
       var headers = {
         "Content-type": "application/json",
         "Authorization": 'Bearer ${MyConstant.access_token}'
-       };
+      };
 
       print(uri.toString());
 
@@ -67,24 +63,23 @@ class CartController extends GetxController {
 
         fetchCartDataList.assignAll(fetchCartModel?.data ?? []);
       } else {
-        throw Exception('Failed to fetch banners. Status code: ${response.statusCode}');
+        throw Exception(
+            'Failed to fetch banners. Status code: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Error sending Banners: $e');
     }
-}
+  }
 
-
- Future<void> deleteAddToCartData(String id) async {
+  Future<void> deleteAddToCartData(String id) async {
     try {
       String apiUrl = ApiRoutes.deleteAddToCartApi + id;
       var headers = {
         "Accept": "application/json",
         "Authorization": 'Bearer ${MyConstant.access_token}'
       };
-  
-      var response =
-          await http.delete(Uri.parse(apiUrl), headers: headers);
+
+      var response = await http.delete(Uri.parse(apiUrl), headers: headers);
       print(response.statusCode);
       print(response.body);
       print(apiUrl);
@@ -105,35 +100,54 @@ class CartController extends GetxController {
     }
   }
 
-  
   Future<void> editAddToCartData(String id, int quantity) async {
+      print("data type quantity $quantity ${quantity.runtimeType}");
+       print("data type id $id ${id.runtimeType}");
+      
     try {
-      String apiUrl = ApiRoutes.editAddToCartApi + id;
+      // Construct the API URL
+      var uri = await Uri.parse(ApiRoutes.editAddToCartApi + id);
+
+      // Define headers for the HTTP request
       var headers = {
-        "Accept": "application/json",
+        'Content-Type': 'application/json',
         "Authorization": 'Bearer ${MyConstant.access_token}'
       };
+
+      // Convert quantity to string
+
+      // Create the request body
       Map<String, dynamic> body = {"quantity": quantity};
+      String jsonData = jsonEncode(body);
+      print("data type quantity ${quantity.runtimeType}");
+      // Perform the HTTP POST request
       var response =
-      await http.post(Uri.parse(apiUrl), body: body, headers: headers);
+          await http.post(uri, body: jsonData, headers: headers);
+
+      // Print response status code and body for debugging
       print(response.statusCode);
       print(response.body);
-      print(apiUrl);
 
+      // Handle response based on status code
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         var success = data["status"];
         if (!success) {
-          throw Exception('Failed to send User Data');
+          throw Exception('Failed to update cart: ${data["message"]}');
         } else {
-          showSnackBar("", data["message"]);
+          // Update successful
+          showSnackBar("", "Cart updated successfully");
         }
       } else {
-        throw Exception('Failed to send user Data ${response.statusCode}');
+        // If the response status code is not 200, throw an exception
+        throw Exception(
+            'Failed to update cart. Server responded with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e);
+      // Handle any exceptions
+      print('Exception caught: $e');
+      // Show error message to user
+      showSnackBar("", "Error occurred: $e");
     }
   }
-
 }

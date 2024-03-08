@@ -21,5 +21,5 @@ class ApiRoutes {
   static String addToCartApi = "${baseUrl}api/cart/";
   static String addToCartFetchApi = "${baseUrl}api/cart/your-cart";
   static String deleteAddToCartApi = "${baseUrl}api/cart/";
-  static String editAddToCartApi = "${baseUrl}api/cart/";
+  static String editAddToCartApi = "${baseUrl}api/cart/edit/";
 }
