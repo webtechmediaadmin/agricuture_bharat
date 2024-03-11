@@ -8,6 +8,7 @@ import '../constant/constant.dart';
 import '../services/cart_services.dart';
 import 'add_to_cart.dart';
 import 'home_screen.dart';
+import 'profile_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -25,7 +26,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     HomeScreen(),
     AddToCart(),
     Text('Search Page'),
-    Text('Profile Page'),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

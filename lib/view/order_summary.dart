@@ -1,6 +1,5 @@
 import 'package:agriculter_bharat/common/color_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class OrderSummary extends StatefulWidget {
   const OrderSummary({super.key});

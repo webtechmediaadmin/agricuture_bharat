@@ -22,7 +22,7 @@ class _AddToCartState extends State<AddToCart> {
     super.initState();
   }
 
-  int _quantity = 1;
+ // int _quantity = 1;
 
   // void _incrementQuantity() {
   //   setState(() {
@@ -42,7 +42,7 @@ class _AddToCartState extends State<AddToCart> {
   double calculateTotalAmount() {
     double totalAmount = 0.0;
     for (var cartItem in addToCartController.fetchCartDataList) {
-      totalAmount += (cartItem.totalAmount ?? 0.0) * (cartItem.quantity ?? 1);
+      totalAmount += (cartItem.totalAmount ?? 0.0) * (cartItem.quantity);
       print("data type amount ${totalAmount.runtimeType}");
     }
     return totalAmount;

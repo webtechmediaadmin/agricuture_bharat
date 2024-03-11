@@ -11,7 +11,6 @@ class ApiRoutes {
   static String userDetailsPage = "${baseUrl}users/name-email";
   static String verifyEmail = "${baseUrl}users/mailing-otp";
   static String userDetailsFetch = "${baseUrl}users/my-profile";
-  static String pinCodeData = "${baseUrl}city?pincode=";
   static String editProfileData = "${baseUrl}users/edit-profile";
   static String categories = "${baseUrl}api/categories";
   static String subCategoriesFetch = baseUrl;
@@ -22,4 +21,7 @@ class ApiRoutes {
   static String addToCartFetchApi = "${baseUrl}api/cart/your-cart";
   static String deleteAddToCartApi = "${baseUrl}api/cart/";
   static String editAddToCartApi = "${baseUrl}api/cart/edit/";
+  static String addressesApi = "${baseUrl}api/address/post";
+  static String pinCodeData = "${baseUrl}api/cities/search-by-pincode?code=";
+
 }

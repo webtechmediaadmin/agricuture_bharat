@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'common/color_extension.dart';
+import 'services/address_services.dart';
 import 'services/all_products_services.dart';
 import 'services/banner_services.dart';
 import 'services/cart_services.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         Get.put(AllProductsController());
         Get.put(AuthController());
         Get.put(CartController());
+        Get.put(AddressController());
       }),
       home: const BottomNavBar(),
      
