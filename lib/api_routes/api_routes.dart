@@ -23,5 +23,8 @@ class ApiRoutes {
   static String editAddToCartApi = "${baseUrl}api/cart/edit/";
   static String addressesApi = "${baseUrl}api/address/post";
   static String pinCodeData = "${baseUrl}api/cities/search-by-pincode?code=";
+  static String addressFetchData = "${baseUrl}api/address";
+  static String deleteAddress = "${baseUrl}api/address/delete/";
+
 
 }

@@ -34,7 +34,8 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // Reset the status bar color
     ));
-    addressController.pincodeController.clear();
+
+   
     super.dispose();
   }
 
@@ -130,7 +131,6 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                     });
                     return null;
                   },
-                
                 ),
                 const SizedBox(height: 15),
                 GestureDetector(
@@ -227,21 +227,24 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                     });
                     return null;
                   },
-                    onChanged: (pincode) async {
-                      
-                      print("PINCOD DATA ${addressController.pincodeController.text}");
-                      print("pincode data $pincode");
-                    if(addressController.pincodeController.text.isNotEmpty){
-                      bool success = await addressController.fetchDataByPincode(pincode);
-                      if(success){
-                           addressController.cityName = addressController.userData["cityName"];
-                        addressController.stateName = addressController.userData["stateName"];
-                        // countryName = cityController.userData["countryName"];
-
-                         print(
+                  onChanged: (pincode) async {
+                    if (pincode.isEmpty) {
+                      // Clear city and state names
+                      addressController.userData.assignAll({
+                        "cityName": null,
+                        "stateName": null,
+                      });
+                    } else {
+                      bool success =
+                          await addressController.fetchDataByPincode(pincode);
+                      if (success) {
+                        addressController.cityName =
+                            addressController.userData["cityName"];
+                        addressController.stateName =
+                            addressController.userData["stateName"];
+                        print(
                             'City Name: ${addressController.cityName}, State Name: ${addressController.stateName}');
-                      } 
-                      else {
+                      } else {
                         // Handle error case
                         print('Failed to fetch city data');
                       }
@@ -249,17 +252,22 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                   },
                 ),
                 const SizedBox(height: 15),
-                Obx(
-                  () { 
-                    addressController.stateName = addressController.userData["stateName"];
-                    addressController.cityName = addressController.userData["cityName"];
-                    return Row(
+                Obx(() {
+                  addressController.stateName =
+                      addressController.userData["stateName"];
+                  addressController.cityName =
+                      addressController.userData["cityName"];
+                  return Row(
                     children: [
                       Expanded(
                         child: TextFormField(
-                        //  controller: addressController.stateName.text ?? "",
+                          //  controller: addressController.stateName.text ?? "",
                           decoration: InputDecoration(
-                            labelText: addressController.stateName ?? 'State (Required)*',
+                            labelText: addressController
+                                    .pincodeController.text.isNotEmpty
+                                ? addressController.userData["stateName"] ??
+                                    'State (Required)*'
+                                : 'State (Required)*',
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 10),
                             border: OutlineInputBorder(
@@ -275,25 +283,29 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                                   color: _isError ? Colors.red : Colors.grey),
                             ),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              setState(() {
-                                _isError = true;
-                              });
-                              return 'Please provide the necessary details';
-                            }
-                            setState(() {
-                              _isError = false;
-                            });
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value!.isEmpty) {
+                          //     setState(() {
+                          //       _isError = true;
+                          //     });
+                          //     return 'Please provide the necessary details';
+                          //   }
+                          //   setState(() {
+                          //     _isError = false;
+                          //   });
+                          //   return null;
+                          // },
                         ),
                       ),
                       const SizedBox(width: 15),
                       Expanded(
                         child: TextFormField(
                           decoration: InputDecoration(
-                            labelText:  addressController.cityName ?? 'City (Required)*',
+                            hintText: addressController
+                                    .pincodeController.text.isNotEmpty
+                                ? addressController.userData["cityName"] ??
+                                    'City (Required)*'
+                                : 'City (Required)*',
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 10),
                             border: OutlineInputBorder(
@@ -309,24 +321,23 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                                   color: _isError ? Colors.red : Colors.grey),
                             ),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              setState(() {
-                                _isError = true;
-                              });
-                              return 'Please provide the necessary details';
-                            }
-                            setState(() {
-                              _isError = false;
-                            });
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value!.isEmpty) {
+                          //     setState(() {
+                          //       _isError = true;
+                          //     });
+                          //     return 'Please provide the necessary details';
+                          //   }
+                          //   setState(() {
+                          //     _isError = false;
+                          //   });
+                          //   return null;
+                          // },
                         ),
                       ),
                     ],
                   );
-                  }
-                ),
+                }),
                 const SizedBox(height: 15),
                 TextFormField(
                   controller: addressController.buildingNameController,
@@ -458,12 +469,12 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                   ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         Map<String, dynamic> body = {
                           "countryID": "65eaea840c03aecb86469807",
-                          "stateID": "65eaecff69a39077bf56a866",
-                          "cityID": "65eaeda4b6fc56d0cf2c402c",
+                          "stateID": addressController.userData["stateId"],
+                          "cityID": addressController.userData["cityId"],
                           "pincode": addressController.pincodeController.text,
                           "name": addressController.nameController.text,
                           "phoneNumber": addressController.phoneController.text,
@@ -472,9 +483,20 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                               addressController.buildingNameController.text,
                           "area": addressController.areaController.text
                         };
-                        addressController
+                        print("BODY $body");
+                        await addressController
                             .addressFetch(body)
-                            .then((value) => print("Add Add Successfully!.."));
+                            .then((value) {
+                          print("Add Add Successfully!..");
+                          addressController.pincodeController.clear();
+                          addressController.phoneController.clear();
+                          addressController.nameController.clear();
+                          addressController.buildingNameController.clear();
+                          addressController.areaController.clear();
+                          addressController.fetchAddresses();
+                         Navigator.pop(context);
+                         
+                        });
                       }
                     },
                     style: ElevatedButton.styleFrom(
