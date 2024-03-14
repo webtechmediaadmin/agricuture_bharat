@@ -72,13 +72,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
           backgroundColor: TColor.bg,
           centerTitle: true,
-          title: Text(
-            "Agriculture Bharat",
-            style: TextStyle(
-                color: TColor.primaryText,
-                fontSize: 25,
-                fontWeight: FontWeight.w800),
-          ),
+          // title: Text(
+          //   "Agriculture Bharat",
+          //   style: TextStyle(
+          //       color: TColor.primaryText,
+          //       fontSize: 25,
+          //       fontWeight: FontWeight.w800),
+          // ),
+          title: Image.asset("assets/images/logo.png", height: 50, ),
           actions: _selectedIndex == 0 || _selectedIndex == 1
               ? [
                   Padding(
