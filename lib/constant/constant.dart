@@ -23,7 +23,9 @@ bool isValidPhoneNumber(String string) {
 class MyConstant {
    static String mobileNumber = "";
    static String access_token = "";
-   static String DEVICE_TOKEN = "";
+   static String DEVICE_TOKEN = ""; 
+   static String? userToken = "";
+   static bool? myBoolValue = false;
 }
 
 // Future<String> getDeviceToken() async {

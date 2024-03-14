@@ -289,7 +289,9 @@ class _AddToCartState extends State<AddToCart> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => const OrderSummary()),
+                              builder: (_) => OrderSummary(
+                                totalAmount: calculateTotalAmount(),
+                              )),
                         );
                       }
                     },

@@ -28,7 +28,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final CartController addToCartController = Get.find();
   PageController _pageController = PageController();
   final RxInt _currentPage = 0.obs;
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController? _phoneNumberController = TextEditingController();
   FocusNode _phoneNumberFocusNode = FocusNode();
   String otp = "";
 
@@ -47,7 +47,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         .then((_) => priceSaving());
     _pageController = PageController(initialPage: _currentPage.value);
     print("ID ${widget.id}");
-    _phoneNumberController.text;
+    _phoneNumberController!.text;
     super.initState();
   }
 
@@ -443,13 +443,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                 
-                  bool? myBoolValue = await PreferenceApp().getIsNewUser();
-                  print("is new user ${myBoolValue}");
-                  String? userToken = await PreferenceApp().getAccessToken();
-                  print("token given ${userToken}");
+                  MyConstant.myBoolValue = await PreferenceApp().getIsNewUser();
+                  print("is new user ${MyConstant.myBoolValue}");
+                  MyConstant.userToken = await PreferenceApp().getAccessToken();
+                  print("token given ${MyConstant.userToken}");
 
-                  if (myBoolValue == true && userToken != null) {
+                  if (MyConstant.myBoolValue == true &&
+                      MyConstant.userToken != null) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -657,13 +657,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     onPressed: () async {
                                       // Handle submission here
                                       String? phoneNumber =
-                                          _phoneNumberController.text;
+                                          _phoneNumberController!.text;
                                       print(
                                           'Submitted Phone Number: $phoneNumber');
                                       _phoneNumberFocusNode.unfocus();
                                       Navigator.pop(context);
+
+                                      if (_phoneNumberController == null ||
+                                          _phoneNumberFocusNode == null ||
+                                          authController == null) {
+                                        print(
+                                            'Error: One or more controllers are null');
+                                        // Handle the case where one of the controllers or authController is null
+                                        return;
+                                      }
+
                                       final mobileValidation =
                                           isValidPhoneNumber(phoneNumber);
+
                                       if (phoneNumber == "") {
                                         showSnackBar(
                                             "", "Please enter mobile number");
@@ -684,9 +695,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) => OTPView(
-                                                      callback:
-                                                          showButtomSheet)),
+                                                builder: (context) => OTPView(
+                                                    callback: showButtomSheet),
+                                              ),
                                             );
                                           });
                                         } catch (e) {
@@ -697,9 +708,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      minimumSize: const Size(
-                                          double.infinity, 50), backgroundColor: const Color.fromARGB(255, 58, 57,
-                                          49), // Color for Buy button
+                                      minimumSize:
+                                          const Size(double.infinity, 50),
+                                      backgroundColor: const Color.fromARGB(255,
+                                          58, 57, 49), // Color for Buy button
                                     ),
                                     child: const Text(
                                       'Continue',

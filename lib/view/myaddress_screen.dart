@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../common/color_extension.dart';
+import '../models/fetch_adress_model.dart';
 import '../services/address_services.dart';
 import 'add_delivery_address.dart';
 
 class MyAddresses extends StatefulWidget {
-  const MyAddresses({super.key});
+  final void Function(FetchAddressData)? onAddressSelected;
+  const MyAddresses({super.key, this.onAddressSelected});
 
   @override
   State<MyAddresses> createState() => _MyAddressesState();
@@ -123,81 +125,120 @@ class _MyAddressesState extends State<MyAddresses> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: addressController.addressDataList.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          color: TColor.bg,
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  PopupMenuButton<String>(
-                                    icon: const Icon(Icons.more_vert, size: 15),
-                                    itemBuilder: (BuildContext context) =>
-                                        <PopupMenuEntry<String>>[
-                                      const PopupMenuItem<String>(
-                                        value: 'edit',
-                                        child: ListTile(
-                                          leading: Icon(Icons.edit),
-                                          title: Text('Edit'),
+                        return GestureDetector(
+                          onTap: () {
+                            final selectedAddress =
+                                addressController.addressDataList[index];
+                            if (widget.onAddressSelected != null) {
+                              widget.onAddressSelected!(selectedAddress);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Address selected: ${selectedAddress.name}'),
+                                ),
+                              );
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            color: TColor.bg,
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    PopupMenuButton<String>(
+                                      icon: const Icon(Icons.more_vert,
+                                          size: 15),
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<String>>[
+                                        const PopupMenuItem<String>(
+                                          value: 'edit',
+                                          child: ListTile(
+                                            leading: Icon(Icons.edit),
+                                            title: Text('Edit'),
+                                          ),
                                         ),
-                                      ),
-                                      const PopupMenuItem<String>(
-                                        value: 'remove',
-                                        child: ListTile(
-                                          leading: Icon(Icons.delete),
-                                          title: Text('Remove'),
+                                        const PopupMenuItem<String>(
+                                          value: 'remove',
+                                          child: ListTile(
+                                            leading: Icon(Icons.delete),
+                                            title: Text('Remove'),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                    onSelected: (String value) {
-                                      if (value == 'edit') {
-                                        // Perform edit action
-                                        print('Edit action');
-                                      } else if (value == 'remove') {
-                                        // Perform remove action
-                                        print('Remove action');
-                                        addressController
-                                            .deleteAddress(addressController
-                                                .addressDataList[index].id
-                                                .toString())
-                                            .then((value) => addressController
-                                                .fetchAddresses());
-                                      }
-                                    },
+                                      ],
+                                      onSelected: (String value) {
+                                        if (value == 'edit') {
+                                          // Perform edit action
+                                          print('Edit action');
+                                        } else if (value == 'remove') {
+                                          // Perform remove action
+                                          print('Remove action');
+                                          addressController
+                                              .deleteAddress(
+                                                  addressController
+                                                      .addressDataList[
+                                                          index]
+                                                      .id
+                                                      .toString())
+                                              .then((value) =>
+                                                  addressController
+                                                      .fetchAddresses());
+                                        } else if (value == 'select') {
+                                          // Pass the selected address back to the previous page
+                                          if (widget.onAddressSelected !=
+                                              null) {
+                                            final selectedAddress =
+                                                addressController
+                                                    .addressDataList[index];
+                                            print(
+                                                'Selected Address: $selectedAddress'); // Print selected address
+                                            widget.onAddressSelected!(
+                                                selectedAddress);
+                                          }
+                                          Navigator.pop(
+                                              context); // Close the MyAddresses page
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    addressController
+                                            .addressDataList[index].name ??
+                                        "",
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 18),
                                   ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  addressController
-                                          .addressDataList[index].name ??
-                                      "",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 50, top: 10, bottom: 10),
-                                child: Text(
-                                  ("${addressController.addressDataList[index].buildingName}, ${addressController.addressDataList[index].area}, ${addressController.addressDataList[index].cityId?.name}, ${addressController.addressDataList[index].stateId?.name}, ${addressController.addressDataList[index].countryId?.name} ,${addressController.addressDataList[index].pincode}"),
-                                  maxLines: 3,
-                                  style: TextStyle(fontSize: 15),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10,
+                                      right: 50,
+                                      top: 10,
+                                      bottom: 10),
+                                  child: Text(
+                                    ("${addressController.addressDataList[index].buildingName}, ${addressController.addressDataList[index].area}, ${addressController.addressDataList[index].cityId?.name}, ${addressController.addressDataList[index].stateId?.name}, ${addressController.addressDataList[index].countryId?.name} ,${addressController.addressDataList[index].pincode}"),
+                                    maxLines: 3,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(addressController
-                                        .addressDataList[index].phoneNumber ??
-                                    ""),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              )
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(addressController
+                                          .addressDataList[index]
+                                          .phoneNumber ??
+                                      ""),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                )
+                              ],
+                            ),
                           ),
                         );
                       })

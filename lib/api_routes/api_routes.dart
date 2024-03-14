@@ -25,6 +25,7 @@ class ApiRoutes {
   static String pinCodeData = "${baseUrl}api/cities/search-by-pincode?code=";
   static String addressFetchData = "${baseUrl}api/address";
   static String deleteAddress = "${baseUrl}api/address/delete/";
+  static String placeOrder = "${baseUrl}api/orders";
 
 
 }

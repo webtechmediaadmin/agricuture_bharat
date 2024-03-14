@@ -1,5 +1,6 @@
 import 'package:agriculter_bharat/widget/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../common/color_extension.dart';
@@ -37,6 +38,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   void initState() {
+     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: TColor.bg, // Change this to any color you want
+      statusBarIconBrightness: Brightness.dark, // Brightness.light for dark icons on light background, vice versa
+    ));
     // TODO: implement initState
     super.initState();
     getValues();
