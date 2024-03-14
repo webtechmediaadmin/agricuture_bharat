@@ -471,10 +471,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               const SizedBox(height: 20), // Adding some spacing between buttons
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async  {
                   print('Item bought!');
                   print("ID of product ${widget.id}");
-                  addToCartController.addToCartData(widget.id);
+
+                  MyConstant.myBoolValue = await PreferenceApp().getIsNewUser();
+                  print("is new user ${MyConstant.myBoolValue}");
+                  MyConstant.userToken = await PreferenceApp().getAccessToken();
+                  print("token given ${MyConstant.userToken}");
+                 
+
+                  if (MyConstant.myBoolValue == true &&
+                      MyConstant.userToken != null) {
+                          addToCartController.addToCartData(widget.id);
+                  
+                  } else {
+                    showSnackBar("", "Login First!");
+                    showButtomSheet();
+                  }
+                
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),

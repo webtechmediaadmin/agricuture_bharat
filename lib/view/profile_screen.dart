@@ -87,36 +87,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Visibility(
-                    visible : MyConstant.userToken != null,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const MyAddresses() ));
-                      },
-                      child:  Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.location_on_outlined,
-                                color: Color.fromARGB(255, 28, 36, 182),
-                              ),
-                              const SizedBox(width: 15),
-                              Text(
-                                "Saved Addresses",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black.withOpacity(0.7)),
-                              ),
-                            ],
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 12,
-                          )
-                        ],
-                      ),
+                  if(
+                      MyConstant.userToken != null && MyConstant.myBoolValue == true)
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const MyAddresses() ));
+                    },
+                    child:  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on_outlined,
+                              color: Color.fromARGB(255, 28, 36, 182),
+                            ),
+                            const SizedBox(width: 15),
+                            Text(
+                              "Saved Addresses",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black.withOpacity(0.7)),
+                            ),
+                          ],
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 12,
+                        )
+                      ],
                     ),
                   ) ,
                   const SizedBox(height: 10),

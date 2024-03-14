@@ -50,8 +50,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   getValues() async {
     var token = await PreferenceApp().getAccessToken();
     MyConstant.access_token = token ?? "";
+    var userLogin = await PreferenceApp().getIsNewUser();
+    MyConstant.myBoolValue = userLogin;
+    print("${MyConstant.myBoolValue}");
     print(
-        "first time user access ${MyConstant.access_token = token ?? "empty token"}");
+        "first time user access ${MyConstant.access_token = token ?? "empty token"} ");
   }
 
   @override
