@@ -24,11 +24,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: TColor.bg, // Change this to any color you want
-      statusBarIconBrightness: Brightness.dark, // Brightness.light for dark icons on light background, vice versa
+      statusBarColor: TColor.bg, 
+      statusBarIconBrightness: Brightness.dark, 
     ));
     return GetMaterialApp(
-      title: 'Agricultre Bharat',
+      title: 'Agriculture Bharat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: TColor.bg,

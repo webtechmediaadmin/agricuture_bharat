@@ -26,6 +26,7 @@ class ApiRoutes {
   static String addressFetchData = "${baseUrl}api/address";
   static String deleteAddress = "${baseUrl}api/address/delete/";
   static String placeOrder = "${baseUrl}api/orders";
+  static String editAddressApi = "${baseUrl}api/address/edit/";
 
 
 }

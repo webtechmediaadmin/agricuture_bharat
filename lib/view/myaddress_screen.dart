@@ -72,7 +72,7 @@ class _MyAddressesState extends State<MyAddresses> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => const AddDeliveryAddress()));
+                          builder: (_) =>  AddDeliveryAddress()));
                 },
                 child: Container(
                   decoration: BoxDecoration(color: TColor.bg, boxShadow: [
@@ -150,8 +150,8 @@ class _MyAddressesState extends State<MyAddresses> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     PopupMenuButton<String>(
-                                      icon: const Icon(Icons.more_vert,
-                                          size: 15),
+                                      icon:
+                                          const Icon(Icons.more_vert, size: 15),
                                       itemBuilder: (BuildContext context) =>
                                           <PopupMenuEntry<String>>[
                                         const PopupMenuItem<String>(
@@ -173,19 +173,19 @@ class _MyAddressesState extends State<MyAddresses> {
                                         if (value == 'edit') {
                                           // Perform edit action
                                           print('Edit action');
+                                          Get.to(() => AddDeliveryAddress(
+                                              isEditing: true,
+                                              id: addressController
+                                                  .addressDataList[index].id, fetchAddressData: addressController.addressDataList[index],));
                                         } else if (value == 'remove') {
                                           // Perform remove action
                                           print('Remove action');
                                           addressController
-                                              .deleteAddress(
-                                                  addressController
-                                                      .addressDataList[
-                                                          index]
-                                                      .id
-                                                      .toString())
-                                              .then((value) =>
-                                                  addressController
-                                                      .fetchAddresses());
+                                              .deleteAddress(addressController
+                                                  .addressDataList[index].id
+                                                  .toString())
+                                              .then((value) => addressController
+                                                  .fetchAddresses());
                                         } else if (value == 'select') {
                                           // Pass the selected address back to the previous page
                                           if (widget.onAddressSelected !=
@@ -217,10 +217,7 @@ class _MyAddressesState extends State<MyAddresses> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 10,
-                                      right: 50,
-                                      top: 10,
-                                      bottom: 10),
+                                      left: 10, right: 50, top: 10, bottom: 10),
                                   child: Text(
                                     ("${addressController.addressDataList[index].buildingName}, ${addressController.addressDataList[index].area}, ${addressController.addressDataList[index].cityId?.name}, ${addressController.addressDataList[index].stateId?.name}, ${addressController.addressDataList[index].countryId?.name} ,${addressController.addressDataList[index].pincode}"),
                                     maxLines: 3,
@@ -230,8 +227,7 @@ class _MyAddressesState extends State<MyAddresses> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(addressController
-                                          .addressDataList[index]
-                                          .phoneNumber ??
+                                          .addressDataList[index].phoneNumber ??
                                       ""),
                                 ),
                                 const SizedBox(

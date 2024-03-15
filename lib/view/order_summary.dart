@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../api_routes/api_routes.dart';
+import '../constant/helper.dart';
 import '../services/address_services.dart';
 import '../services/cart_services.dart';
 import '../services/place_order_service.dart';
@@ -11,7 +12,7 @@ import 'bottom_nav_bar.dart';
 import 'myaddress_screen.dart';
 
 class OrderSummary extends StatefulWidget {
- final double  totalAmount;
+  final double totalAmount;
   const OrderSummary({super.key, required this.totalAmount});
 
   @override
@@ -27,11 +28,9 @@ class _OrderSummaryState extends State<OrderSummary> {
   void initState() {
     super.initState();
 
-   fetchData();
-   cartController.fetchCartData();
-  
+    fetchData();
+    cartController.fetchCartData();
   }
-
 
   void fetchData() async {
     try {
@@ -139,89 +138,89 @@ class _OrderSummaryState extends State<OrderSummary> {
                         const SizedBox(height: 10),
                       if (addressController.addressDataList.isNotEmpty)
                         Text(
-                          addressController.addressDataList[0].phoneNumber ?? "",
+                          addressController.addressDataList[0].phoneNumber ??
+                              "",
                         ),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-             ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: cartController.fetchCartDataList.length,
-                    itemBuilder: (context, index) {
-                       final cartItem = cartController.fetchCartDataList[index];
-                      return Column(
-                        children: [
-                          Container(
-                            color: TColor.bg,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Column(
-                                          children: [
-                                            Image.network(
-                                                  cartItem.productId!.logo != null
-                                            ? (ApiRoutes.baseUrl +
-                                                cartItem.productId!.logo!)
-                                            : "",
-                                              height: 80,
-                                              width: 80,
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: cartController.fetchCartDataList.length,
+                  itemBuilder: (context, index) {
+                    final cartItem = cartController.fetchCartDataList[index];
+                    return Column(
+                      children: [
+                        Container(
+                          color: TColor.bg,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Column(
+                                        children: [
+                                          Image.network(
+                                            cartItem.productId!.logo != null
+                                                ? (ApiRoutes.baseUrl +
+                                                    cartItem.productId!.logo!)
+                                                : "",
+                                            height: 80,
+                                            width: 80,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text.rich(
+                                            TextSpan(
+                                              text: "Quantity",
+                                              style: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 15),
+                                              children: [
+                                                TextSpan(
+                                                  text: " ${cartItem.quantity}",
+                                                  style: const TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(height: 10),
-                                            Text.rich(
-                                              TextSpan(
-                                                text: "Quantity",
-                                                style: const TextStyle(
-                                                    color: Colors.red,
-                                                    fontSize: 15),
-                                                children: [
-                                                  TextSpan(
-                                                    text: " ${cartItem.quantity}",
-                                                    style: const TextStyle(
-                                                        color: Colors.grey),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                          )
+                                        ],
                                       ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                "${cartItem.productId!.title}"),
-                                            Text("${cartItem.productId!.discountedPrice}"),
-                                          ],
-                                        ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("${cartItem.productId!.title}"),
+                                          Text(
+                                              "${cartItem.productId!.discountedPrice}"),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Text("Deliver by Tue Mar 12"),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                Text("Deliver by Tue Mar 12"),
+                              ],
                             ),
                           ),
-                        ],
-                      );
-                    }),
-            
+                        ),
+                      ],
+                    );
+                  }),
               const SizedBox(height: 10),
               Container(
                 color: TColor.bg,
@@ -233,8 +232,8 @@ class _OrderSummaryState extends State<OrderSummary> {
                     children: [
                       Text(
                         "Price Details",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 16),
                       ),
                       const SizedBox(
                         height: 20,
@@ -250,7 +249,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                                 color: Colors.grey),
                           ),
                           Text(
-                            "\u20B9 ${widget.totalAmount.toStringAsFixed(2)}" ,
+                            "\u20B9 ${widget.totalAmount.toStringAsFixed(2)}",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -354,15 +353,17 @@ class _OrderSummaryState extends State<OrderSummary> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      placeOrderController.placeOrder(addressController.addressDataList[0].id!).then((value) => 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const BottomNavBar()))
-                      );
-                    
-
-
+                      if (addressController.addressDataList.isNotEmpty) {
+                        placeOrderController
+                            .placeOrder(
+                                addressController.addressDataList[0].id!)
+                            .then((value) => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const BottomNavBar())));
+                      } else {
+                        showSnackBar("", "Select Address to Proceed");
+                      }
                     },
                     child: SizedBox(
                       width: 190,

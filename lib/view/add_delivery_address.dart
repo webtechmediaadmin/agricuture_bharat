@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../models/fetch_adress_model.dart';
 import '../services/address_services.dart';
 
 class AddDeliveryAddress extends StatefulWidget {
-  const AddDeliveryAddress({super.key});
+  final bool? isEditing;
+  final String? id;
+  FetchAddressData? fetchAddressData;
+  AddDeliveryAddress(
+      {super.key, this.isEditing, this.id, this.fetchAddressData});
 
   @override
   State<AddDeliveryAddress> createState() => _AddDeliveryAddressState();
@@ -20,12 +25,44 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
 
   @override
   void initState() {
-    super.initState();
     // Change the status bar color when the widget initializes
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor:
           Color.fromARGB(255, 14, 78, 239), // Set the status bar color here
     ));
+
+      if (widget.isEditing == true) {
+    editAddress();
+  } else {
+    resetFormFields();
+  }
+    super.initState();
+  }
+
+  void resetFormFields() {
+  addressController.nameController.clear();
+  addressController.phoneController.clear();
+  addressController.pincodeController.clear();
+  addressController.buildingNameController.clear();
+  addressController.areaController.clear();
+  addressController.landmarkController.clear();
+  // Reset any other form fields as needed
+}
+
+  editAddress() {
+    addressController.nameController.text = widget.fetchAddressData!.name ?? "";
+    addressController.phoneController.text =
+        widget.fetchAddressData!.phoneNumber ?? "";
+    
+    addressController.pincodeController.text =
+        widget.fetchAddressData!.pincode ?? "";
+     addressController.stateName =
+                      addressController.userData["stateName"] ?? "";
+                  addressController.cityName =
+                      addressController.userData["cityName"] ?? "";    
+    addressController.buildingNameController.text =
+        widget.fetchAddressData!.buildingName ?? "";
+    addressController.areaController.text = widget.fetchAddressData!.area ?? "";
   }
 
   @override
@@ -35,7 +72,6 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
       statusBarColor: Colors.transparent, // Reset the status bar color
     ));
 
-   
     super.dispose();
   }
 
@@ -56,8 +92,8 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
           },
         ),
         title: Text(
-          "Add delivery address",
-          style: TextStyle(color: Colors.white),
+          widget.isEditing ?? false ? "Edit Address" : "Add delivery address",
+          style: const TextStyle(color: Colors.white),
         ),
       ),
       body: SingleChildScrollView(
@@ -471,32 +507,56 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                 ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Map<String, dynamic> body = {
-                          "countryID": "65eaea840c03aecb86469807",
-                          "stateID": addressController.userData["stateId"],
-                          "cityID": addressController.userData["cityId"],
-                          "pincode": addressController.pincodeController.text,
-                          "name": addressController.nameController.text,
-                          "phoneNumber": addressController.phoneController.text,
-                          "type": "Home",
-                          "buildingName":
-                              addressController.buildingNameController.text,
-                          "area": addressController.areaController.text
-                        };
-                        print("BODY $body");
-                        await addressController
-                            .addressFetch(body)
-                            .then((value) {
-                          print("Add Add Successfully!..");
-                          addressController.pincodeController.clear();
-                          addressController.phoneController.clear();
-                          addressController.nameController.clear();
-                          addressController.buildingNameController.clear();
-                          addressController.areaController.clear();
-                          addressController.fetchAddresses();
-                         Navigator.pop(context);
-                         
-                        });
+                        if (widget.isEditing == true) {
+                          Map<String, dynamic> body = {
+                            "countryID": "65eaea840c03aecb86469807",
+                            "stateID": addressController.userData["stateId"],
+                            "cityID": addressController.userData["cityId"],
+                            "pincode": addressController.pincodeController.text,
+                            "name": addressController.nameController.text,
+                            "phoneNumber":
+                                addressController.phoneController.text,
+                            "type": "Home",
+                            "buildingName":
+                                addressController.buildingNameController.text,
+                            "area": addressController.areaController.text
+                          };
+                          print("BODY $body");
+                          await addressController
+                              .editAddress(body, widget.id!)
+                              .then((value) {print("Edit profile screen");
+                               Navigator.pop(context);
+                                addressController.fetchAddresses();
+                              }
+                              );
+                        } else {
+                          Map<String, dynamic> body = {
+                            "countryID": "65eaea840c03aecb86469807",
+                            "stateID": addressController.userData["stateId"],
+                            "cityID": addressController.userData["cityId"],
+                            "pincode": addressController.pincodeController.text,
+                            "name": addressController.nameController.text,
+                            "phoneNumber":
+                                addressController.phoneController.text,
+                            "type": "Home",
+                            "buildingName":
+                                addressController.buildingNameController.text,
+                            "area": addressController.areaController.text
+                          };
+                          print("BODY $body");
+                          await addressController
+                              .addressFetch(body)
+                              .then((value) {
+                            print("Add Add Successfully!..");
+                            addressController.pincodeController.clear();
+                            addressController.phoneController.clear();
+                            addressController.nameController.clear();
+                            addressController.buildingNameController.clear();
+                            addressController.areaController.clear();
+                            addressController.fetchAddresses();
+                            Navigator.pop(context);
+                          });
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -508,9 +568,9 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                       minimumSize: const Size(
                           double.infinity, 40), // Set button width to full size
                     ),
-                    child: const Text(
-                      "Save Address",
-                      style: TextStyle(fontSize: 16),
+                    child: Text(
+                      widget.isEditing ?? false ? "Update Address" : "Save Address",
+                      style: const TextStyle(fontSize: 16),
                     ))
               ],
             ),

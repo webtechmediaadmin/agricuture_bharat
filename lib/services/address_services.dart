@@ -179,4 +179,36 @@ class AddressController extends GetxController {
     }
   }
 
+
+  Future<void> editAddress(final body, String id) async {
+    try {
+      String apiUrl = ApiRoutes.editAddressApi + id;
+      var headers = {
+        "Content-type": "application/json",
+        "Authorization": 'Bearer ${MyConstant.access_token}'
+      };
+      print("BODY1-------------$body");
+      var response =
+          await http.post(Uri.parse(apiUrl), body: jsonEncode(body), headers: headers);
+      print(response.statusCode);
+      print(response.body);
+      print(apiUrl);
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        var success = data["status"];
+        if (!success) {
+          throw Exception('Failed to edit User Address');
+        } else {
+          showSnackBar("", data["message"]);
+        }
+      } else {
+        throw Exception('Failed to edit user Data ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
 }
