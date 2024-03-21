@@ -471,7 +471,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               const SizedBox(height: 20), // Adding some spacing between buttons
               ElevatedButton(
-                onPressed: () async  {
+                onPressed: () async {
                   print('Item bought!');
                   print("ID of product ${widget.id}");
 
@@ -479,17 +479,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   print("is new user ${MyConstant.myBoolValue}");
                   MyConstant.userToken = await PreferenceApp().getAccessToken();
                   print("token given ${MyConstant.userToken}");
-                 
 
                   if (MyConstant.myBoolValue == true &&
                       MyConstant.userToken != null) {
-                          addToCartController.addToCartData(widget.id);
-                  
+                    addToCartController.addToCartData(widget.id);
                   } else {
                     showSnackBar("", "Login First!");
                     showButtomSheet();
                   }
-                
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
@@ -671,21 +668,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 : ElevatedButton(
                                     onPressed: () async {
                                       // Handle submission here
-                                      String? phoneNumber =
-                                          _phoneNumberController!.text;
+                                      String phoneNumber =
+                                          _phoneNumberController != null
+                                              ? _phoneNumberController!.text
+                                              : "";
+
                                       print(
                                           'Submitted Phone Number: $phoneNumber');
                                       _phoneNumberFocusNode.unfocus();
                                       Navigator.pop(context);
 
-                                      if (_phoneNumberController == null ||
-                                          _phoneNumberFocusNode == null ||
-                                          authController == null) {
-                                        print(
-                                            'Error: One or more controllers are null');
-                                        // Handle the case where one of the controllers or authController is null
-                                        return;
-                                      }
+                                      // if (_phoneNumberController == null ||
+                                      //     _phoneNumberFocusNode == null ||
+                                      //     authController == null) {
+                                      //   print(
+                                      //       'Error: One or more controllers are null');
+                                      //   // Handle the case where one of the controllers or authController is null
+                                      //   return;
+                                      // }
 
                                       final mobileValidation =
                                           isValidPhoneNumber(phoneNumber);

@@ -12,6 +12,7 @@ import 'services/cart_services.dart';
 import 'services/place_order_service.dart';
 import 'services/sub_categories_services.dart';
 import 'view/bottom_nav_bar.dart';
+import 'view/splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         Get.put(AddressController());
         Get.put(PlaceOrderController());
       }),
-      home: const BottomNavBar(),
+      home: const SplashScreen(),
      
     );
   }

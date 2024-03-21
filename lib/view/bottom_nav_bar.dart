@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../common/color_extension.dart';
-import '../constant/app_preferences.dart';
-import '../constant/constant.dart';
 import '../services/cart_services.dart';
 import 'add_to_cart.dart';
 import 'home_screen.dart';
@@ -44,18 +42,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
     ));
     // TODO: implement initState
     super.initState();
-    getValues();
+    
   }
 
-  getValues() async {
-    var token = await PreferenceApp().getAccessToken();
-    MyConstant.access_token = token ?? "";
-    var userLogin = await PreferenceApp().getIsNewUser();
-    MyConstant.myBoolValue = userLogin;
-    print("${MyConstant.myBoolValue}");
-    print(
-        "first time user access ${MyConstant.access_token = token ?? "empty token"} ");
-  }
+  
 
   @override
   Widget build(BuildContext context) {

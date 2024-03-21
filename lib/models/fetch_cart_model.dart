@@ -3,7 +3,6 @@
 //     final fetchCartModel = fetchCartModelFromJson(jsonString);
 
 import 'dart:convert';
-import 'dart:ffi';
 
 FetchCartModel fetchCartModelFromJson(String str) =>
     FetchCartModel.fromJson(json.decode(str));

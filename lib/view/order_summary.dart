@@ -1,5 +1,4 @@
 import 'package:agriculter_bharat/common/color_extension.dart';
-import 'package:agriculter_bharat/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
