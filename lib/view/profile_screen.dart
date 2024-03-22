@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../common/color_extension.dart';
 import '../constant/constant.dart';
@@ -14,167 +15,340 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-      print("TOKEN TAKEN ${MyConstant.access_token}");
-      print("TOKEN TAKEN ${MyConstant.myBoolValue}");
+    print("TOKEN TAKEN ${MyConstant.access_token}");
+    print("TOKEN TAKEN ${MyConstant.myBoolValue}");
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 224, 222, 222),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(150),
           child: Container(
-            color: TColor.bg,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Account Settings",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.person_outline_outlined,
-                            color: Color.fromARGB(255, 28, 36, 182),
-                          ),
-                          const SizedBox(width: 15),
-                          Text(
-                            "Edit Profile",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black.withOpacity(0.7)),
-                          ),
-                        ],
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 12,
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.wallet_outlined,
-                              color: Color.fromARGB(255, 28, 36, 182),
-                            ),
-                            const SizedBox(width: 15),
-                            Text(
-                              "Saved Cards & Wallet",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black.withOpacity(0.7)),
-                            ),
-                          ],
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 12,
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  if(
-                      MyConstant.userToken != null && MyConstant.myBoolValue == true)
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const MyAddresses() ));
-                    },
-                    child:  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              color: Color.fromARGB(255, 28, 36, 182),
-                            ),
-                            const SizedBox(width: 15),
-                            Text(
-                              "Saved Addresses",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black.withOpacity(0.7)),
-                            ),
-                          ],
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 12,
-                        )
-                      ],
-                    ),
-                  ) ,
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.language_outlined,
-                            color: Color.fromARGB(255, 28, 36, 182),
-                          ),
-                          const SizedBox(width: 15),
-                          Text(
-                            "Select Language",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black.withOpacity(0.7)),
-                          ),
-                        ],
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 12,
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.notifications_outlined,
-                            color: Color.fromARGB(255, 28, 36, 182),
-                          ),
-                          const SizedBox(width: 15),
-                          Text(
-                            "Notification Settings",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black.withOpacity(0.7)),
-                          ),
-                        ],
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 12,
-                      )
-                    ],
-                  ),
-                
-                 
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xff4B844D),
+                  Color(0xff111E12),
                 ],
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25),
+              ),
+            ),
+            child: Column(children: [
+              Center(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xffFFFFFF),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.person,
+                      size: 80,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text("User Name", style: TextStyle(color: Colors.white, fontSize: 15),)
+            ]),
+          )),
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/images/png.png', // Replace with your SVG image path
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0XF4B844D).withOpacity(0.3)),
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.person_outline_outlined,
+                                color: Color(0xff4B844D),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "Order History",
+                                style: TextStyle(
+                                    fontSize: 14, color: Color(0xff4B844D)),
+                              ),
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: Color(0xff4B844D),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Color(0XF4B844D).withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.wallet_outlined,
+                                  color: Color(0xff4B844D),
+                                ),
+                                const SizedBox(width: 15),
+                                Text(
+                                  "Payment Settings",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Color(0xff4B844D)),
+                                ),
+                              ],
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 12,
+                              color: Color(0xff4B844D),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    if (MyConstant.userToken != null &&
+                        MyConstant.myBoolValue == true)
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const MyAddresses()));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(0XF4B844D).withOpacity(0.3)),
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on_outlined,
+                                    color: Color(0xff4B844D),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Text(
+                                    "Saved Addresses",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Color(0xff4B844D)),
+                                  ),
+                                ],
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 12,
+                                color: Color(0xff4B844D),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0XF4B844D).withOpacity(0.3)),
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.language_outlined,
+                                color: Color(0xff4B844D),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "Select Language",
+                                style: TextStyle(
+                                    fontSize: 14, color: Color(0xff4B844D)),
+                              ),
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: Color(0xff4B844D),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0XF4B844D).withOpacity(0.3)),
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.notifications_outlined,
+                                color: Color(0xff4B844D),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "Notification Settings",
+                                style: TextStyle(
+                                    fontSize: 14, color: Color(0xff4B844D)),
+                              ),
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: Color(0xff4B844D),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0XF4B844D).withOpacity(0.3)),
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.privacy_tip,
+                                color: Color(0xff4B844D),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "Privacy Policy",
+                                style: TextStyle(
+                                    fontSize: 14, color: Color(0xff4B844D)),
+                              ),
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: Color(0xff4B844D),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0XF4B844D).withOpacity(0.3)),
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.info,
+                                color: Color(0xff4B844D),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "About Us",
+                                style: TextStyle(
+                                    fontSize: 14, color: Color(0xff4B844D)),
+                              ),
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: Color(0xff4B844D),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color(0XF4B844D).withOpacity(0.3)),
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.logout,
+                                color: Color(0xff4B844D),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "Log Out",
+                                style: TextStyle(
+                                    fontSize: 14, color: Color(0xff4B844D)),
+                              ),
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: Color(0xff4B844D),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
