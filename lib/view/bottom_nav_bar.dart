@@ -51,16 +51,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.menu_rounded,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              print("drawer...");
-              _scaffoldKey.currentState?.openDrawer();
-            },
-          ),
+          // leading: IconButton(
+          //   icon: const Icon(
+          //     Icons.menu_rounded,
+          //     color: Colors.black,
+          //   ),
+          //   onPressed: () {
+          //     print("drawer...");
+          //     _scaffoldKey.currentState?.openDrawer();
+          //   },
+          // ),
           backgroundColor: Color(0xff4B844D),
           centerTitle: true,
           // title: Text(
@@ -70,10 +70,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
           //       fontSize: 25,
           //       fontWeight: FontWeight.w800),
           // ),
-          title: _selectedIndex != 3 ? Image.asset(
-            "assets/images/logo.png",
-            height: 50,
-          ) : const Text("Profile"),
+          // title: _selectedIndex != 3 ? Image.asset(
+          //   "assets/images/logo.png",
+          //   height: 50,
+          // ) : const Text("Profile"),
           actions: _selectedIndex == 0 || _selectedIndex == 1
               ? [
                   Padding(
@@ -83,7 +83,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         Icon(
                           Icons.shopping_bag_outlined,
                           size: 30,
-                          color: TColor.primaryText,
+                          color: TColor.bg,
                         ),
                         // Show count only if items are in the cart
                         if (addToCartController.fetchCartModel != null &&
@@ -123,7 +123,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 )
               ],
         ),
-        drawer: const CustomDrawer(),
+       // drawer: const CustomDrawer(),
         body: Stack(
           children: [
             _widgetOptions[_selectedIndex],

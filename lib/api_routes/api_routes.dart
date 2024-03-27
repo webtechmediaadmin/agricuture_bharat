@@ -6,7 +6,7 @@ class ApiRoutes {
   static String verifyOtp = "${baseUrl}api/users/otp-verify";
   static String bannerApi = "${baseUrl}api/banners";
   static String subCategories = "${baseUrl}api/sub-categories?categoryID=";
-  static String allProducts = "${baseUrl}api/products?subCategoryID=";
+  static String allProducts = "${baseUrl}api/products?isActive=true&&subCategoryID=";
   static String allProductsDetails = "${baseUrl}api/products?id=";
   static String userDetailsPage = "${baseUrl}users/name-email";
   static String verifyEmail = "${baseUrl}users/mailing-otp";
