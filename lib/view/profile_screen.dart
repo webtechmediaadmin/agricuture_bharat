@@ -1,7 +1,12 @@
+import 'package:agriculter_bharat/view/bottom_nav_bar.dart';
+import 'package:agriculter_bharat/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/color_extension.dart';
+import '../constant/app_preferences.dart';
 import '../constant/constant.dart';
 import 'myaddress_screen.dart';
 
@@ -54,7 +59,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              Text("User Name", style: TextStyle(color: Colors.white, fontSize: 15),)
+              Text(
+                "User Name",
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              )
             ]),
           )),
       body: Stack(
@@ -312,35 +320,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Color(0XF4B844D).withOpacity(0.3)),
-                          borderRadius: BorderRadius.circular(10)),
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.logout,
-                                color: Color(0xff4B844D),
-                              ),
-                              const SizedBox(width: 15),
-                              Text(
-                                "Log Out",
-                                style: TextStyle(
-                                    fontSize: 14, color: Color(0xff4B844D)),
-                              ),
-                            ],
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 12,
-                            color: Color(0xff4B844D),
-                          )
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        showLogoutDialog(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Color(0XF4B844D).withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.logout,
+                                  color: Color(0xff4B844D),
+                                ),
+                                const SizedBox(width: 15),
+                                Text(
+                                  "Log Out",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Color(0xff4B844D)),
+                                ),
+                              ],
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 12,
+                              color: Color(0xff4B844D),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -350,6 +363,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          child: FractionallySizedBox(
+
+            widthFactor: 0.8,
+            child: Container(
+             
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF70CB74),
+                    Color(0xFF354F33),
+                  ], // Adjust gradient colors as needed
+                ),
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Center(
+                      child: Text(
+                        'Log out of your account?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                
+                  const Divider(),
+                  GestureDetector(
+                    onTap: () {
+                      PreferenceApp().removePreferences();
+                      Get.offAllNamed('/bottomNavbar');
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          'Log out',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: TColor.bg,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                 
+                  const Divider(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+                   SizedBox(height: 10.0),
+                   ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

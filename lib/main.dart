@@ -51,6 +51,9 @@ class MyApp extends StatelessWidget {
         Get.put(PlaceOrderController());
       }),
       home: const SplashScreen(),
+      getPages: [
+            GetPage(name: '/bottomNavbar', page: () => BottomNavBar()),
+      ],
      
     );
   }

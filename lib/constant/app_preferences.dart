@@ -24,4 +24,13 @@ class PreferenceApp {
     return value;
   }
 
+  removePreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('token');
+    prefs.remove('isNewUser');
+    // prefs.remove('isProfileUpdated');
+    // prefs.remove('roleType');
+    //  prefs.remove('level');
+  }
+
 }

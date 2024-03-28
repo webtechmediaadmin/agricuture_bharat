@@ -60,8 +60,8 @@ class _AddToCartState extends State<AddToCart> {
               height: MediaQuery.of(context).size.height,
             ),
           SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 500),
+            child: Padding( padding: const EdgeInsets.only(bottom: 500),
+             
               child: Column(
                 children: [
                   Obx(
