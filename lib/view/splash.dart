@@ -34,18 +34,10 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }
     });
-    getValues();
+   ConstFunction().getValues();
   }
 
-  getValues() async {
-    var token = await PreferenceApp().getAccessToken();
-    MyConstant.access_token = token ?? "";
-    var userLogin = await PreferenceApp().getIsNewUser();
-    MyConstant.myBoolValue = userLogin;
-    print("${MyConstant.myBoolValue}");
-    print(
-        "first time user access ${MyConstant.access_token = token ?? "empty token"} ");
-  }
+  
 
     @override
   void dispose() {

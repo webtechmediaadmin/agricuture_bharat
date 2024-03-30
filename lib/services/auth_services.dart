@@ -64,12 +64,14 @@ class AuthController extends GetxController {
           throw Exception('OTP verification failed');
         } else {
           
-          if(success != null && token != null){
+          if(success != null && token != null)  {
           print("TOKEN $token");
           PreferenceApp().setAccessToken(data['token'] ?? "");
           MyConstant.access_token = data['token'] ?? "";
-          PreferenceApp().setIsNewUser(true);
+          MyConstant.myBoolValue = await PreferenceApp().setIsNewUser(true);
+
           print("--------token ${MyConstant.access_token}");
+            print("--------token ${MyConstant.myBoolValue}");
           }
         }
         return true;

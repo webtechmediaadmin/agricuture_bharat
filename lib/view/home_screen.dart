@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../api_routes/api_routes.dart';
 import '../common/color_extension.dart';
+import '../constant/constant.dart';
 import '../services/banner_services.dart';
 import 'utility/Responsive_widget.dart';
 
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController = PageController(initialPage: _currentPage.value);
     bannerController.fetchBanners();
     categoryController.fetchCategory();
+    ConstFunction().getValues();
     // Start autoplay when widget is initialized
     startAutoPlay();
   }
@@ -93,7 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    
+                  },
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(

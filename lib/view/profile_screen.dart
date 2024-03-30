@@ -18,10 +18,19 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    MyConstant.access_token;
+    MyConstant.myBoolValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     print("TOKEN TAKEN ${MyConstant.access_token}");
-    print("TOKEN TAKEN ${MyConstant.myBoolValue}");
+    print("Bool value ${MyConstant.myBoolValue}");
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(150),

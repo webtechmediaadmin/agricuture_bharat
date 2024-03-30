@@ -63,6 +63,7 @@ class _AddToCartState extends State<AddToCart> {
             child: Padding( padding: const EdgeInsets.only(bottom: 500),
              
               child: Column(
+                
                 children: [
                   Obx(
                     () {

@@ -30,7 +30,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final CartController addToCartController = Get.find();
   PageController _pageController = PageController();
   final RxInt _currentPage = 0.obs;
-  final TextEditingController? _phoneNumberController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   FocusNode _phoneNumberFocusNode = FocusNode();
   String otp = "";
 
@@ -155,20 +155,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Product Inforamtion",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    widget.text,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400),
-                  ),
+                 
                   const SizedBox(
                     height: 5,
                   ),
@@ -525,12 +512,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        MyConstant.myBoolValue =
-                            await PreferenceApp().getIsNewUser();
-                        print("is new user ${MyConstant.myBoolValue}");
-                        MyConstant.userToken =
-                            await PreferenceApp().getAccessToken();
-                        print("token given ${MyConstant.userToken}");
+                        // MyConstant.myBoolValue =
+                        //     await PreferenceApp().getIsNewUser();
+                        // print("is new user ${MyConstant.myBoolValue}");
+                        // MyConstant.userToken =
+                        //     await PreferenceApp().getAccessToken();
+                        // print("token given ${MyConstant.userToken}");
 
                         if (MyConstant.myBoolValue == true &&
                             MyConstant.userToken != null) {
@@ -573,11 +560,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         print('Item bought!');
                         print("ID of product ${widget.id}");
 
-                        MyConstant.myBoolValue =
-                            await PreferenceApp().getIsNewUser();
-                        print("is new user ${MyConstant.myBoolValue}");
-                        MyConstant.userToken =
-                            await PreferenceApp().getAccessToken();
+                        // MyConstant.myBoolValue =
+                        //     await PreferenceApp().setIsNewUser(true);
+                      print("is new user ${MyConstant.myBoolValue}");
+                        // MyConstant.userToken =
+                        //     await PreferenceApp().setAccessToken();
                         print("token given ${MyConstant.userToken}");
 
                         if (MyConstant.myBoolValue == true &&
@@ -787,7 +774,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       // Handle submission here
                                       String phoneNumber =
                                           _phoneNumberController != null
-                                              ? _phoneNumberController!.text
+                                              ? _phoneNumberController.text
                                               : "";
 
                                       print(

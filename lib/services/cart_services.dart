@@ -8,6 +8,8 @@ import '../constant/constant.dart';
 import '../models/fetch_cart_model.dart';
 
 class CartController extends GetxController {
+  Map<String, bool> _cartItemsStatus = {};
+
   Future<void> addToCartData(String id) async {
     try {
       String apiUrl = ApiRoutes.addToCartApi + id;
@@ -21,15 +23,21 @@ class CartController extends GetxController {
       print(response.body);
       print(apiUrl);
 
+      var data = json.decode(response.body);
+      var success = data["status"];
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        var success = data["status"];
         if (!success) {
           throw Exception('Failed to send User Data');
         } else {
+          _cartItemsStatus[id] = true;
           showSnackBar("", data["message"]);
         }
       } else {
+        print("_cartItemsStatus: $_cartItemsStatus");
+        print("id: $id");
+        if (_cartItemsStatus.containsKey(id) && _cartItemsStatus[id]!) {
+          showSnackBar("", data["message"]);
+        }
         throw Exception('Failed to send user Data ${response.statusCode}');
       }
     } catch (e) {
@@ -90,6 +98,7 @@ class CartController extends GetxController {
         if (!success) {
           throw Exception('Failed to send User Data');
         } else {
+          _cartItemsStatus[id] = false;
           showSnackBar("", data["message"]);
         }
       } else {
@@ -101,9 +110,9 @@ class CartController extends GetxController {
   }
 
   Future<void> editAddToCartData(String id, int quantity) async {
-      print("data type quantity $quantity ${quantity.runtimeType}");
-       print("data type id $id ${id.runtimeType}");
-      
+    print("data type quantity $quantity ${quantity.runtimeType}");
+    print("data type id $id ${id.runtimeType}");
+
     try {
       // Construct the API URL
       var uri = await Uri.parse(ApiRoutes.editAddToCartApi + id);
@@ -121,8 +130,7 @@ class CartController extends GetxController {
       String jsonData = jsonEncode(body);
       print("data type quantity ${quantity.runtimeType}");
       // Perform the HTTP POST request
-      var response =
-          await http.post(uri, body: jsonData, headers: headers);
+      var response = await http.post(uri, body: jsonData, headers: headers);
 
       // Print response status code and body for debugging
       print(response.statusCode);

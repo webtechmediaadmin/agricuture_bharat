@@ -2,6 +2,8 @@
 
 //import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'app_preferences.dart';
+
 bool isValidPhoneNumber(String string) {
   // Null or empty string is invalid phone number
   if (string.isEmpty) {
@@ -27,6 +29,23 @@ class MyConstant {
    static String? userToken = "";
    static bool? myBoolValue = false;
 }
+
+class ConstFunction {
+
+   getValues() async {
+    var token = await PreferenceApp().getAccessToken();
+    MyConstant.access_token = token ?? "";
+    var userLogin = await PreferenceApp().getIsNewUser();
+    MyConstant.myBoolValue = userLogin ?? false;
+    print("${MyConstant.myBoolValue}");
+    print(
+        "first time user access ${MyConstant.access_token = token ?? "empty token"} ");
+  }
+
+}
+
+
+
 
 // Future<String> getDeviceToken() async {
 //     await messaging.requestPermission(alert: true, badge: true, provisional: false);
