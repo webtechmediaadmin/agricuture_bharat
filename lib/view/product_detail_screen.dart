@@ -120,12 +120,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             IconButton(
               icon: Icon(Icons.shopping_bag_outlined, color: TColor.bg),
               onPressed: () {
-                Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BottomNavBar(selectedIndex: 1),
-            ),
-          );
+                Get.offAll(
+                  BottomNavBar(selectedIndex: 1),
+                );
               },
             ),
           ],
@@ -167,7 +164,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 
                   const SizedBox(
                     height: 5,
                   ),
@@ -220,7 +216,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     height: 10,
                   ),
                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       RatingBar.builder(
                         initialRating: 0,
@@ -270,9 +266,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 text:
                                     "${allProductsDetailsController.allProductDetailModel.value.data?.first.discountedPrice} /-",
                                 style: const TextStyle(
-                                    fontSize:
-                                        12.0, 
-                                    decoration: TextDecoration.lineThrough,    // Change font size for "180"
+                                    fontSize: 12.0,
+                                    decoration: TextDecoration
+                                        .lineThrough, // Change font size for "180"
                                     color:
                                         Colors.grey, // Change color for "180"
                                     fontWeight: FontWeight.w600),
@@ -289,13 +285,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       Text(
-                    widget.text,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
-                  ),
+                      Text(
+                        widget.text,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
                       Obx(
                         () => RichText(
                           text: TextSpan(
@@ -307,16 +303,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               TextSpan(
                                 text: 'You Save: ',
                                 style: TextStyle(
-                                  fontSize: 12.0, // Change font size for "Price"
-                                  color: Colors.black
-                                      .withOpacity(0.7), // Change color for "Price"
+                                  fontSize:
+                                      12.0, // Change font size for "Price"
+                                  color: Colors.black.withOpacity(
+                                      0.7), // Change color for "Price"
                                 ),
                               ),
                               TextSpan(
                                 text:
                                     '${allProductsDetailsController.savePrice.value.toStringAsFixed(2)} /-   ',
                                 style: const TextStyle(
-                                    fontSize: 12.0, // Change font size for "180"
+                                    fontSize:
+                                        12.0, // Change font size for "180"
                                     color: Colors.red, // Change color for "180"
                                     fontWeight: FontWeight.w600),
                               ),
@@ -324,8 +322,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 text:
                                     '${allProductsDetailsController.allProductDetailModel.value.data?.first.discountPercent}% OFF',
                                 style: const TextStyle(
-                                    fontSize: 18.0, // Change font size for "180"
-                                    color: Colors.green, // Change color for "180"
+                                    fontSize:
+                                        18.0, // Change font size for "180"
+                                    color:
+                                        Colors.green, // Change color for "180"
                                     fontWeight: FontWeight.w600),
                               ),
                             ],
@@ -574,7 +574,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                         // MyConstant.myBoolValue =
                         //     await PreferenceApp().setIsNewUser(true);
-                      print("is new user ${MyConstant.myBoolValue}");
+                        print("is new user ${MyConstant.myBoolValue}");
                         // MyConstant.userToken =
                         //     await PreferenceApp().setAccessToken();
                         print("token given ${MyConstant.userToken}");
