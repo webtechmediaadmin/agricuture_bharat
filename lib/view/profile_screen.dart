@@ -8,6 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../common/color_extension.dart';
 import '../constant/app_preferences.dart';
 import '../constant/constant.dart';
+import '../services/address_services.dart';
+import '../services/all_products_services.dart';
+import '../services/auth_services.dart';
+import '../services/banner_services.dart';
+import '../services/cart_services.dart';
+import '../services/categories_services.dart';
+import '../services/place_order_service.dart';
+import '../services/sub_categories_services.dart';
 import 'myaddress_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,7 +26,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -329,42 +336,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () {
-                        showLogoutDialog(context);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Color(0XF4B844D).withOpacity(0.3)),
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.logout,
-                                  color: Color(0xff4B844D),
-                                ),
-                                const SizedBox(width: 15),
-                                Text(
-                                  "Log Out",
-                                  style: TextStyle(
-                                      fontSize: 14, color: Color(0xff4B844D)),
-                                ),
-                              ],
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 12,
-                              color: Color(0xff4B844D),
-                            )
-                          ],
+                    if (MyConstant.userToken != null &&
+                        MyConstant.myBoolValue == true)
+                      GestureDetector(
+                        onTap: () {
+                          showLogoutDialog(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(0XF4B844D).withOpacity(0.3)),
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.logout,
+                                    color: Color(0xff4B844D),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Text(
+                                    "Log Out",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Color(0xff4B844D)),
+                                  ),
+                                ],
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 12,
+                                color: Color(0xff4B844D),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -386,10 +395,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           elevation: 0.0,
           backgroundColor: Colors.transparent,
           child: FractionallySizedBox(
-
             widthFactor: 0.8,
             child: Container(
-             
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   begin: Alignment.topCenter,
@@ -416,12 +423,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                
                   const Divider(),
                   GestureDetector(
                     onTap: () {
                       PreferenceApp().removePreferences();
-                      Get.offAllNamed('/bottomNavbar');
+                      Get.find<BannerController>().refresh();
+                      Get.find<CategoryController>().refresh();
+                      Get.find<SubCategoryController>().refresh();
+                      Get.find<AllProductsController>().refresh();
+                      Get.find<CartController>().refresh();
+                      Get.find<AddressController>().refresh();
+                      Get.find<PlaceOrderController>().refresh();
+                      Get.offAllNamed(
+                        '/bottomNavbar',
+                      );
                     },
                     child: Center(
                       child: Padding(
@@ -437,7 +452,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                 
                   const Divider(),
                   GestureDetector(
                     onTap: () {
@@ -454,8 +468,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                   SizedBox(height: 10.0),
-                   ],
+                  SizedBox(height: 10.0),
+                ],
               ),
             ),
           ),

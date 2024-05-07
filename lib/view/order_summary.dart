@@ -403,7 +403,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                             .then((value) => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const BottomNavBar())));
+                                    builder: (_) => BottomNavBar(selectedIndex: 0))));
                       } else {
                         showSnackBar("", "Select Address to Proceed");
                       }

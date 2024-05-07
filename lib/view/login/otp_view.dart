@@ -91,7 +91,7 @@ import '../bottom_nav_bar.dart';
                             Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) => const BottomNavBar()),
+                                                  builder: (context) => BottomNavBar(selectedIndex: 0)),
                                             );
                         } else {
                           print("Invalid OTP response");

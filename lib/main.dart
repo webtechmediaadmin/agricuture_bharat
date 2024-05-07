@@ -11,6 +11,7 @@ import 'services/banner_services.dart';
 import 'services/cart_services.dart';
 import 'services/place_order_service.dart';
 import 'services/sub_categories_services.dart';
+import 'view/add_to_cart.dart';
 import 'view/bottom_nav_bar.dart';
 import 'view/splash.dart';
 
@@ -52,7 +53,9 @@ class MyApp extends StatelessWidget {
       }),
       home: const SplashScreen(),
       getPages: [
-            GetPage(name: '/bottomNavbar', page: () => BottomNavBar()),
+            GetPage(name: '/bottomNavbar', page: () => BottomNavBar(selectedIndex: 0)),
+            GetPage(name: '/cartScreen', page: () => AddToCart()),
+            
       ],
      
     );

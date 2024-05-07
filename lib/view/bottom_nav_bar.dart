@@ -1,7 +1,8 @@
-import 'package:agriculter_bharat/widget/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import 'package:agriculter_bharat/widget/custom_drawer.dart';
 
 import '../common/color_extension.dart';
 import '../services/cart_services.dart';
@@ -11,14 +12,18 @@ import 'profile_screen.dart';
 import 'search_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+   int selectedIndex = 0;
+  BottomNavBar({
+    Key? key,
+    required this.selectedIndex,
+  }) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _selectedIndex = 0;
+ 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final CartController addToCartController = Get.find();
 
@@ -31,7 +36,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      widget.selectedIndex = index;
     });
   }
 
@@ -75,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           //   "assets/images/logo.png",
           //   height: 50,
           // ) : const Text("Profile"),
-          actions: _selectedIndex == 0 || _selectedIndex == 1
+          actions: widget.selectedIndex == 0 || widget.selectedIndex == 1
               ? [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -127,9 +132,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
        // drawer: const CustomDrawer(),
         body: Stack(
           children: [
-            _widgetOptions[_selectedIndex],
+            _widgetOptions[widget.selectedIndex],
             Positioned(
-              bottom: 0,
+              bottom: MediaQuery.of(context).padding.bottom -15,
               left: 0,
               right: 0,
               child: Padding(
@@ -149,7 +154,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           Color(0xFF354F33)
                         ], // Example gradient colors
                       ),
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: BottomNavigationBar(
                       backgroundColor: Colors.transparent,
@@ -171,7 +176,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           label: 'Profile',
                         ),
                       ],
-                      currentIndex: _selectedIndex,
+                      currentIndex: widget.selectedIndex,
                       selectedItemColor: Colors.black,
                       unselectedItemColor: Colors.white,
                       onTap: _onItemTapped,

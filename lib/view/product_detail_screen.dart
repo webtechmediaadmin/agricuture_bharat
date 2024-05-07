@@ -14,6 +14,7 @@ import '../constant/helper.dart';
 import '../services/all_products_services.dart';
 import '../services/auth_services.dart';
 import '../services/cart_services.dart';
+import 'bottom_nav_bar.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String id;
@@ -49,7 +50,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         .then((_) => priceSaving());
     _pageController = PageController(initialPage: _currentPage.value);
     print("ID ${widget.id}");
-    _phoneNumberController!.text;
+    _phoneNumberController.text;
     super.initState();
   }
 
@@ -114,6 +115,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 print("share..");
                 Share.share('check out my website https://example.com',
                     subject: 'Look what I made!');
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.shopping_bag_outlined, color: TColor.bg),
+              onPressed: () {
+                Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomNavBar(selectedIndex: 1),
+            ),
+          );
               },
             ),
           ],

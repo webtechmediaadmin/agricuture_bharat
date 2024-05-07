@@ -1,5 +1,5 @@
 class ApiRoutes {
-  static String preProductionUrl = "http://13.201.65.104/";
+  static String preProductionUrl = "http://35.154.95.30:9009/";
   static String baseUrl = preProductionUrl;
 
   static String mobileNumberApi = "${baseUrl}api/users/phone-login";

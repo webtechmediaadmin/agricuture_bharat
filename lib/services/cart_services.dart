@@ -71,8 +71,10 @@ class CartController extends GetxController {
 
         fetchCartDataList.assignAll(fetchCartModel?.data ?? []);
       } else {
-        throw Exception(
-            'Failed to fetch banners. Status code: ${response.statusCode}');
+        // throw Exception(
+        //     'Failed to fetch banners. Status code: ${response.statusCode}');
+        fetchCartDataList.clear();    
+        print(response.statusCode);
       }
     } catch (e) {
       throw Exception('Error sending Banners: $e');
